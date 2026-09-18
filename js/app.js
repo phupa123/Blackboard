@@ -1,5 +1,5 @@
-// Blackboard Library Application Logic
-// Direct Supabase Cloud Storage (100% Cloud-Only, No LocalStorage)
+// JUMP THAILAND Library Logic
+// Supports Realtime Supabase + Full CRUD (Add, Edit, Delete, Toggle Status, Preview)
 
 (function () {
     // State
@@ -10,7 +10,7 @@
 
     // DOM Elements
     const gridContainer = document.getElementById('libraryGrid');
-    const filterButtons = document.querySelectorAll('.filter-btn');
+    const filterButtons = document.querySelectorAll('.filter-pill');
     const searchInput = document.getElementById('searchInput');
     const countAll = document.getElementById('countAll');
     const countUse = document.getElementById('countUse');
@@ -18,14 +18,16 @@
     const connectionStatus = document.getElementById('connectionStatus');
     const connectionText = document.getElementById('connectionText');
 
-    // Modals
-    const addModal = document.getElementById('addModal');
+    // Add / Edit Modal
+    const itemModal = document.getElementById('itemModal');
+    const modalTitle = document.getElementById('modalTitle');
     const openAddModalBtn = document.getElementById('openAddModalBtn');
-    const closeAddModalBtn = document.getElementById('closeAddModalBtn');
-    const cancelAddBtn = document.getElementById('cancelAddBtn');
-    const addItemForm = document.getElementById('addItemForm');
+    const heroAddBtn = document.getElementById('heroAddBtn');
+    const closeItemModalBtn = document.getElementById('closeItemModalBtn');
+    const cancelItemBtn = document.getElementById('cancelItemBtn');
+    const itemForm = document.getElementById('itemForm');
+    const itemIdInput = document.getElementById('itemIdInput');
 
-    // Add Form Inputs & Preview
     const inputTitle = document.getElementById('itemTitle');
     const inputUrl = document.getElementById('itemUrl');
     const inputDesc = document.getElementById('itemDesc');
@@ -44,7 +46,7 @@
     const iframeFallback = document.getElementById('iframeFallback');
     const fallbackLink = document.getElementById('fallbackLink');
 
-    // --- Helper: Extract domain and favicon ---
+    // --- Helpers: Domain & Favicon ---
     function getDomain(url) {
         try {
             const parsed = new URL(url.startsWith('http') ? url : `https://${url}`);
@@ -59,54 +61,54 @@
         return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
     }
 
-    // --- Supabase Setup ---
+    // --- Supabase Init ---
     function initSupabase() {
         const config = window.SUPABASE_CONFIG || {};
 
         if (config.url && config.anonKey && window.supabase) {
             try {
                 supabase = window.supabase.createClient(config.url, config.anonKey);
-                setConnectionBadge('Supabase Live (เชื่อมต่อคลาวด์แล้ว)', true);
+                setConnectionBadge('Supabase Live (เชื่อมต่อแล้ว)', true);
                 fetchSupabaseData();
                 subscribeToRealtime();
                 return;
             } catch (err) {
                 console.error('Supabase init error:', err);
-                setConnectionBadge('เชื่อมต่อ Supabase ผิดพลาด', false);
+                setConnectionBadge('เชื่อมต่อผิดพลาด', false);
                 showErrorState('ไม่สามารถเชื่อมต่อ Supabase ได้: ' + err.message);
             }
         } else {
-            setConnectionBadge('ยังไม่ได้ระบุ Supabase URL/Key', false);
-            showErrorState('กรุณาระบุ URL และ Anon Key ใน js/config.js');
+            setConnectionBadge('ยังไม่ได้ระบุ Config', false);
+            showErrorState('กรุณาตรวจสอบการตั้งค่าใน js/config.js');
         }
     }
 
     function setConnectionBadge(text, isOnline) {
-        connectionText.textContent = text;
-        const dot = connectionStatus.querySelector('.status-dot');
-        if (isOnline) {
-            dot.className = 'status-dot online';
-        } else {
-            dot.className = 'status-dot demo';
+        if (connectionText) connectionText.textContent = text;
+        if (connectionStatus) {
+            const dot = connectionStatus.querySelector('.status-dot');
+            if (dot) {
+                dot.className = isOnline ? 'status-dot online' : 'status-dot demo';
+            }
         }
     }
 
     function showErrorState(msg) {
         gridContainer.innerHTML = `
-            <div class="empty-state">
-                <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #fb7185;">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            <div style="text-align: center; padding: 60px 20px; background: #161f2c; border: 1px dashed rgba(142, 214, 0, 0.4); border-radius: 20px; grid-column: 1 / -1;">
+                <svg width="56" height="56" fill="none" stroke="#8ed600" viewBox="0 0 24 24" style="margin-bottom: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
-                <h3>เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล</h3>
-                <p style="color: #cbd5e1;">${escapeHtml(msg)}</p>
-                <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 8px;">
-                    อย่าลืมนำสคริปต์ใน <code>database/schema.sql</code> ไปรันใน Supabase SQL Editor
+                <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: #fff; font-weight: 800;">ไม่สามารถดึงข้อมูลจากตารางได้</h3>
+                <p style="color: #a0aec0; max-width: 500px; margin: 0 auto 16px;">${escapeHtml(msg)}</p>
+                <p style="font-size: 0.88rem; color: #8ed600;">
+                    💡 รันคำสั่งใน <code>database/schema.sql</code> ที่ Supabase SQL Editor เพื่อสร้างตาราง
                 </p>
             </div>
         `;
     }
 
-    // --- Realtime Subscriptions ---
+    // --- Realtime Sync ---
     function subscribeToRealtime() {
         if (!supabase) return;
         supabase
@@ -117,7 +119,7 @@
             .subscribe();
     }
 
-    // --- Data Fetching from Supabase Only ---
+    // --- Fetch Items ---
     async function fetchSupabaseData() {
         if (!supabase) return;
         try {
@@ -128,30 +130,24 @@
 
             if (error) {
                 console.error('Fetch error:', error);
-                if (error.code === '42P01') {
-                    showErrorState('ยังไม่พบตาราง "items" ใน Supabase กรุณารันคำสั่งใน database/schema.sql ที่ Supabase SQL Editor');
-                } else {
-                    showErrorState(error.message);
-                }
+                showErrorState(error.message);
                 return;
             }
 
             items = data || [];
             renderGrid();
         } catch (err) {
-            console.error('Error fetching Supabase items:', err);
+            console.error('Error fetching items:', err);
             showErrorState(err.message);
         }
     }
 
-    // --- Actions: Toggle Status (Use / Not Use) ---
+    // --- Status Toggle ---
     window.toggleItemStatus = async function (id) {
         const item = items.find((i) => i.id === id);
         if (!item || !supabase) return;
 
         const newStatus = item.status === 'use' ? 'not_use' : 'use';
-
-        // Optimistic UI update
         item.status = newStatus;
         renderGrid();
 
@@ -161,14 +157,31 @@
             .eq('id', id);
 
         if (error) {
-            alert('เกิดข้อผิดพลาดในการเปลี่ยนสถานะ: ' + error.message);
+            alert('เปลี่ยนสถานะไม่สำเร็จ: ' + error.message);
             fetchSupabaseData();
         }
     };
 
-    // --- Actions: Delete Item ---
+    // --- Edit Item Modal Open ---
+    window.openEditModal = function (id) {
+        const item = items.find((i) => i.id === id);
+        if (!item) return;
+
+        itemIdInput.value = item.id;
+        inputTitle.value = item.title;
+        inputUrl.value = item.url;
+        inputCategory.value = item.category || 'AI & Tech';
+        inputDesc.value = item.description || '';
+
+        modalTitle.textContent = 'แก้ไขข้อมูลใน Library';
+        updateModalPreview();
+
+        openModal(itemModal);
+    };
+
+    // --- Delete Item ---
     window.deleteItem = async function (id) {
-        if (!confirm('คุณแน่ใจว่าต้องการลบรายการนี้ออกจาก Library?')) return;
+        if (!confirm('ยืนยันการลบรายการนี้ออกจาก Library?')) return;
         if (!supabase) return;
 
         items = items.filter((i) => i.id !== id);
@@ -180,12 +193,12 @@
             .eq('id', id);
 
         if (error) {
-            alert('ไม่สามารถลบรายการได้: ' + error.message);
+            alert('ลบรายการไม่สำเร็จ: ' + error.message);
             fetchSupabaseData();
         }
     };
 
-    // --- Actions: Open Full Preview ---
+    // --- Open Full Preview ---
     window.openPreviewModal = function (url, title) {
         let fullUrl = url.trim();
         if (!fullUrl.startsWith('http://') && !fullUrl.startsWith('https://')) {
@@ -203,11 +216,11 @@
             iframeFallback.style.display = 'flex';
         };
 
-        previewModal.style.display = 'flex';
+        openModal(previewModal);
     };
 
-    // --- Add New Item directly to Supabase ---
-    addItemForm.addEventListener('submit', async (e) => {
+    // --- Add or Update Item Form Submit ---
+    itemForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!supabase) {
             alert('ยังไม่ได้เชื่อมต่อฐานข้อมูล Supabase');
@@ -219,44 +232,69 @@
             rawUrl = 'https://' + rawUrl;
         }
 
+        const editId = itemIdInput.value;
         const title = inputTitle.value.trim();
         const description = inputDesc.value.trim();
-        const category = inputCategory.value || 'General';
+        const category = inputCategory.value || 'AI & Tech';
 
-        const submitBtn = addItemForm.querySelector('button[type="submit"]');
+        const submitBtn = itemForm.querySelector('button[type="submit"]');
         submitBtn.disabled = true;
         submitBtn.textContent = 'กำลังบันทึก...';
 
-        const { error } = await supabase.from('items').insert([{
-            title: title,
-            url: rawUrl,
-            description: description,
-            category: category,
-            status: 'use'
-        }]);
+        if (editId) {
+            // Update Existing Item
+            const { error } = await supabase
+                .from('items')
+                .update({
+                    title: title,
+                    url: rawUrl,
+                    description: description,
+                    category: category
+                })
+                .eq('id', editId);
 
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = `
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            บันทึกเข้า Library
-        `;
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'บันทึกการเปลี่ยนแปลง';
 
-        if (error) {
-            alert('เกิดข้อผิดพลาดในการบันทึกลง Supabase: ' + error.message);
-            return;
+            if (error) {
+                alert('เกิดข้อผิดพลาดในการแก้ไข: ' + error.message);
+                return;
+            }
+        } else {
+            // Insert New Item
+            const { error } = await supabase
+                .from('items')
+                .insert([{
+                    title: title,
+                    url: rawUrl,
+                    description: description,
+                    category: category,
+                    status: 'use'
+                }]);
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+                บันทึกเข้า Library
+            `;
+
+            if (error) {
+                alert('เกิดข้อผิดพลาดในการเพิ่มงาน: ' + error.message);
+                return;
+            }
         }
 
-        // Close and reset modal
-        closeModal(addModal);
-        addItemForm.reset();
+        closeModal(itemModal);
+        itemForm.reset();
+        itemIdInput.value = '';
         livePreviewContainer.style.display = 'none';
         await fetchSupabaseData();
     });
 
-    // --- Realtime Input preview inside Modal ---
-    inputUrl.addEventListener('input', () => {
+    // --- Live input preview ---
+    function updateModalPreview() {
         const url = inputUrl.value.trim();
         if (url.length > 3) {
             const domain = getDomain(url);
@@ -267,24 +305,21 @@
         } else {
             livePreviewContainer.style.display = 'none';
         }
-    });
+    }
 
-    inputTitle.addEventListener('input', () => {
-        if (livePreviewContainer.style.display !== 'none') {
-            previewTitleText.textContent = inputTitle.value.trim() || getDomain(inputUrl.value);
-        }
-    });
+    inputUrl.addEventListener('input', updateModalPreview);
+    inputTitle.addEventListener('input', updateModalPreview);
 
     // --- Render Grid ---
     function renderGrid() {
-        // Compute Counts
+        // Counts
         const totalCount = items.length;
         const useCount = items.filter((i) => i.status === 'use').length;
         const notUseCount = items.filter((i) => i.status === 'not_use').length;
 
-        countAll.textContent = totalCount;
-        countUse.textContent = useCount;
-        countNotUse.textContent = notUseCount;
+        if (countAll) countAll.textContent = totalCount;
+        if (countUse) countUse.textContent = useCount;
+        if (countNotUse) countNotUse.textContent = notUseCount;
 
         // Filter & Search
         let filtered = items.filter((item) => {
@@ -306,14 +341,16 @@
 
         if (filtered.length === 0) {
             gridContainer.innerHTML = `
-                <div class="empty-state">
-                    <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                <div style="text-align: center; padding: 70px 20px; background: #161f2c; border: 1px dashed rgba(142, 214, 0, 0.3); border-radius: 20px; grid-column: 1 / -1;">
+                    <svg width="60" height="60" fill="none" stroke="#8ed600" viewBox="0 0 24 24" style="margin-bottom: 16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                     </svg>
-                    <h3>ไม่พบข้อมูลใน Library</h3>
-                    <p>ยังไม่มีรายการที่ตรงกับการค้นหา หรือยังไม่มีการเพิ่มงานในหมวดนี้</p>
-                    <button class="btn-primary" onclick="document.getElementById('openAddModalBtn').click()">
-                        + เพิ่มงานชิ้นแรก
+                    <h3 style="font-size: 1.4rem; color: #fff; font-weight: 800; margin-bottom: 8px;">ยังไม่พบรายการในหมวดนี้</h3>
+                    <p style="color: #a0aec0; margin-bottom: 24px; max-width: 440px; margin-left: auto; margin-right: auto;">
+                        เริ่มต้นเพิ่มงานและทรัพยากรชิ้นแรกของคุณ เพื่อให้ทีมสามารถเข้ามาคัดเลือกและใช้งานร่วมกันได้ทันที
+                    </p>
+                    <button class="btn-jump-primary" onclick="document.getElementById('openAddModalBtn').click()">
+                        + เพิ่มงานชิ้นแรกเลย!
                     </button>
                 </div>
             `;
@@ -327,54 +364,56 @@
                 const isUse = item.status === 'use';
 
                 return `
-                <div class="card-item status-${item.status}" id="card-${item.id}">
-                    <!-- Card Thumbnail / Preview Banner -->
-                    <div class="card-preview-thumb" onclick="openPreviewModal('${escapeHtml(item.url)}', '${escapeHtml(item.title)}')">
-                        <div class="card-preview-placeholder">
-                            <img src="${favicon}" alt="Favicon" style="width: 48px; height: 48px; border-radius: 12px; margin-bottom: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" onerror="this.src='https://via.placeholder.com/48?text=Web'">
-                            <span style="font-size: 0.82rem; color: #94a3b8; font-weight: 500;">${escapeHtml(domain)}</span>
+                <div class="jump-card status-${item.status}" id="card-${item.id}">
+                    <!-- Card Banner Preview -->
+                    <div class="jump-card-banner" onclick="openPreviewModal('${escapeHtml(item.url)}', '${escapeHtml(item.title)}')">
+                        <div class="banner-center-info">
+                            <img src="${favicon}" alt="Favicon" style="width: 46px; height: 46px; border-radius: 12px; margin-bottom: 4px; box-shadow: 0 4px 14px rgba(0,0,0,0.5);" onerror="this.src='https://via.placeholder.com/46?text=Web'">
+                            <span class="banner-domain">${escapeHtml(domain)}</span>
                         </div>
-                        <div class="card-preview-overlay">
-                            <span class="preview-badge-btn">
-                                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        <div class="jump-card-overlay">
+                            <span class="jump-preview-btn">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                 ดูหน้า Preview
                             </span>
                         </div>
                     </div>
 
                     <!-- Card Body -->
-                    <div class="card-body">
-                        <div class="card-header-row">
-                            <span class="card-category">${escapeHtml(item.category || 'General')}</span>
-                            <span class="status-pill ${item.status}">
-                                <span class="status-dot ${isUse ? 'online' : 'demo'}" style="width: 6px; height: 6px;"></span>
-                                ${isUse ? 'ใช้' : 'ไม่ใช้'}
+                    <div class="jump-card-body">
+                        <div class="jump-card-meta">
+                            <span class="jump-tag-cat">${escapeHtml(item.category || 'AI & Tech')}</span>
+                            <span class="jump-status-badge ${item.status}">
+                                <span class="status-dot ${isUse ? 'online' : 'demo'}" style="width: 7px; height: 7px;"></span>
+                                ${isUse ? 'ใช้ (Active)' : 'ไม่ใช้ (Archived)'}
                             </span>
                         </div>
 
-                        <h3 class="card-title">${escapeHtml(item.title)}</h3>
-                        <p class="card-description">${escapeHtml(item.description || 'ไม่มีคำอธิบายเพิ่มเติม')}</p>
-                        
-                        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="card-url-link">
+                        <h3 class="jump-card-title">${escapeHtml(item.title)}</h3>
+                        <p class="jump-card-desc">${escapeHtml(item.description || 'ไม่มีคำอธิบายเพิ่มเติม')}</p>
+
+                        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="jump-card-link">
                             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                             ${escapeHtml(item.url)}
                         </a>
 
-                        <!-- Card Action Bar -->
-                        <div class="card-actions">
-                            <button class="status-toggle-btn ${isUse ? 'mark-notuse' : 'mark-use'}" onclick="toggleItemStatus('${item.id}')">
+                        <!-- Card Actions: Toggle, Edit, Delete, Preview -->
+                        <div class="jump-card-actions">
+                            <button class="btn-toggle-status ${isUse ? 'mark-notuse' : 'mark-use'}" onclick="toggleItemStatus('${item.id}')">
                                 ${
                                     isUse
-                                        ? `<svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg> เปลี่ยนเป็น "ไม่ใช้"`
-                                        : `<svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> เปลี่ยนเป็น "ใช้"`
+                                        ? `<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg> เปลี่ยนเป็น "ไม่ใช้"`
+                                        : `<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> เปลี่ยนเป็น "ใช้"`
                                 }
                             </button>
 
-                            <button class="btn-icon-action" title="เปิดดู Preview" onclick="openPreviewModal('${escapeHtml(item.url)}', '${escapeHtml(item.title)}')">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <!-- Edit Button -->
+                            <button class="btn-action-icon edit" title="แก้ไขข้อมูล" onclick="openEditModal('${item.id}')">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                             </button>
 
-                            <button class="btn-icon-action delete" title="ลบรายการ" onclick="deleteItem('${item.id}')">
+                            <!-- Delete Button -->
+                            <button class="btn-action-icon delete" title="ลบรายการ" onclick="deleteItem('${item.id}')">
                                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                             </button>
                         </div>
@@ -385,7 +424,6 @@
             .join('');
     }
 
-    // --- Helpers: Escape HTML ---
     function escapeHtml(str) {
         if (!str) return '';
         return String(str)
@@ -396,7 +434,7 @@
             .replace(/'/g, '&#039;');
     }
 
-    // --- Filter Handlers ---
+    // --- Filter Buttons ---
     filterButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
             filterButtons.forEach((b) => b.classList.remove('active'));
@@ -406,13 +444,15 @@
         });
     });
 
-    // --- Search Handler ---
-    searchInput.addEventListener('input', (e) => {
-        searchQuery = e.target.value.trim();
-        renderGrid();
-    });
+    // --- Search ---
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.trim();
+            renderGrid();
+        });
+    }
 
-    // --- Modal Controls ---
+    // --- Modal Helpers ---
     function openModal(modal) {
         modal.style.display = 'flex';
     }
@@ -424,17 +464,26 @@
         }
     }
 
-    openAddModalBtn.addEventListener('click', () => openModal(addModal));
-    closeAddModalBtn.addEventListener('click', () => closeModal(addModal));
-    cancelAddBtn.addEventListener('click', () => closeModal(addModal));
-    closePreviewModalBtn.addEventListener('click', () => closeModal(previewModal));
+    // Modal Trigger Listeners
+    function openAddModalHandler() {
+        modalTitle.textContent = 'เพิ่มงาน / ทรัพยากรใหม่';
+        itemForm.reset();
+        itemIdInput.value = '';
+        livePreviewContainer.style.display = 'none';
+        openModal(itemModal);
+    }
 
-    // Close on outside backdrop click
+    if (openAddModalBtn) openAddModalBtn.addEventListener('click', openAddModalHandler);
+    if (heroAddBtn) heroAddBtn.addEventListener('click', openAddModalHandler);
+    if (closeItemModalBtn) closeItemModalBtn.addEventListener('click', () => closeModal(itemModal));
+    if (cancelItemBtn) cancelItemBtn.addEventListener('click', () => closeModal(itemModal));
+    if (closePreviewModalBtn) closePreviewModalBtn.addEventListener('click', () => closeModal(previewModal));
+
     window.addEventListener('click', (e) => {
-        if (e.target === addModal) closeModal(addModal);
+        if (e.target === itemModal) closeModal(itemModal);
         if (e.target === previewModal) closeModal(previewModal);
     });
 
-    // --- Initialize ---
+    // Init
     initSupabase();
 })();
