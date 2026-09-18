@@ -17,10 +17,86 @@
     <!-- Sky Blue Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>">
     
+    <!-- Tailwind CSS (Play CDN for modern utility classes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cloud: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                        },
+                        brand: {
+                            primary: '#0284c7',
+                            hover: '#0369a1',
+                            accent: '#0ea5e9',
+                            mint: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        prompt: ['Prompt', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'Prompt', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP & ScrollTrigger Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
     <!-- Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <!-- Grand National Edition Intro Curtain Loader -->
+    <div id="bb-intro-curtain" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#07090e] overflow-hidden select-none">
+        <!-- Atmospheric Ambient Glows matching the warm silver/bronze & cyan theme -->
+        <div class="absolute w-[650px] h-[650px] rounded-full bg-sky-500/15 blur-[140px] pointer-events-none animate-pulse"></div>
+        <div class="absolute w-[450px] h-[450px] rounded-full bg-amber-500/10 blur-[130px] pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-[#07090e]/80 to-[#07090e] pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-xl">
+            <!-- Official Edition Badge -->
+            <div class="bb-intro-badge inline-flex items-center gap-2.5 px-5 py-1.5 rounded-full border border-sky-400/30 bg-sky-950/40 text-sky-300 text-xs tracking-widest uppercase font-bold mb-7 backdrop-blur-xl shadow-xl shadow-sky-950/50">
+                <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
+                <span>กระดานดำสัมพันธ์ ครั้งที่ 21 • THE 21st NATIONAL EDITION</span>
+            </div>
+
+            <!-- Official Emblem Artwork with Glow Frame -->
+            <div class="bb-intro-emblem-wrap relative mb-6">
+                <!-- Rotating subtle metallic aura -->
+                <div class="absolute -inset-4 rounded-full bg-gradient-to-r from-sky-400/20 via-amber-200/20 to-sky-400/20 blur-xl opacity-75 animate-pulse"></div>
+                <div class="relative w-40 h-40 sm:w-48 sm:h-48 rounded-3xl overflow-hidden p-1.5 bg-gradient-to-b from-white/20 via-slate-700/40 to-black/60 shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/15 backdrop-blur-md flex items-center justify-center">
+                    <img src="assets/poster-intro.jpg" alt="ตราสัญลักษณ์กระดานดำสัมพันธ์ ครั้งที่ 21" class="bb-intro-image w-full h-full object-cover rounded-2xl transform hover:scale-105 transition-transform duration-700">
+                </div>
+            </div>
+
+            <!-- Titles -->
+            <h1 class="bb-intro-title text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-2 leading-tight font-prompt">
+                BLACK<span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-200 to-amber-200">BOARD</span>
+            </h1>
+
+            <p class="bb-intro-sub text-base sm:text-lg text-slate-300 font-medium mb-7 font-prompt tracking-wide">
+                โครงการสัมมนาและแข่งขันวิชาการระดับประเทศ ครั้งที่ ๒๑
+            </p>
+
+            <!-- Loading Progress Bar -->
+            <div class="w-64 sm:w-80 h-1.5 bg-slate-900/90 rounded-full overflow-hidden p-0.5 border border-slate-700/60 relative mb-4 shadow-inner">
+                <div id="bb-intro-progress" class="h-full bg-gradient-to-r from-sky-500 via-cyan-300 to-amber-300 rounded-full w-0 shadow-[0_0_12px_rgba(56,189,248,0.8)]"></div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+                <span class="bb-intro-caption text-xs text-slate-400 font-mono tracking-widest uppercase">INITIALIZING ARCHIVE & REPOSITORIES...</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Cloud Ambient Animated Background -->
     <div class="cloud-ambient-bg">
         <div class="cloud-bubble cloud-bubble-1"></div>

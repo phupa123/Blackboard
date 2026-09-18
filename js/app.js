@@ -422,6 +422,9 @@
             `;
             })
             .join('');
+
+        // Trigger GSAP Card Entrance Animation
+        animateCards();
     }
 
     function escapeHtml(str) {
@@ -452,15 +455,146 @@
         });
     }
 
-    // --- Modal Helpers ---
+    // Modal Helpers with GSAP Animations
     function openModal(modal) {
         modal.style.display = 'flex';
+        if (window.gsap) {
+            const modalContent = modal.querySelector('.jump-modal');
+            gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' });
+            if (modalContent) {
+                gsap.fromTo(
+                    modalContent,
+                    { scale: 0.92, y: 20, opacity: 0 },
+                    { scale: 1, y: 0, opacity: 1, duration: 0.35, ease: 'back.out(1.4)' }
+                );
+            }
+        }
     }
 
     function closeModal(modal) {
-        modal.style.display = 'none';
-        if (modal === previewModal) {
-            previewIframe.src = '';
+        if (window.gsap) {
+            const modalContent = modal.querySelector('.jump-modal');
+            gsap.to(modalContent || modal, {
+                scale: 0.95,
+                y: 10,
+                opacity: 0,
+                duration: 0.2,
+                ease: 'power2.in',
+                onComplete: () => {
+                    modal.style.display = 'none';
+                    if (modal === previewModal) {
+                        previewIframe.src = '';
+                    }
+                }
+            });
+            gsap.to(modal, { opacity: 0, duration: 0.2 });
+        } else {
+            modal.style.display = 'none';
+            if (modal === previewModal) {
+                previewIframe.src = '';
+            }
+        }
+    }
+
+    // GSAP Page Intro & Grand National Entrance Sequence
+    function initAnimations() {
+        if (!window.gsap) return;
+
+        const curtain = document.getElementById('bb-intro-curtain');
+        const progress = document.getElementById('bb-intro-progress');
+
+        if (curtain) {
+            // Master Timeline
+            const tl = gsap.timeline();
+
+            // 1. Elements inside intro appear with luxury easing
+            tl.from('.bb-intro-badge', { y: -25, opacity: 0, duration: 0.6, ease: 'back.out(1.7)' })
+              .from('.bb-intro-emblem-wrap', { scale: 0.75, opacity: 0, rotationY: 25, duration: 0.9, ease: 'power3.out' }, '-=0.3')
+              .from('.bb-intro-title', { y: 25, opacity: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
+              .from('.bb-intro-sub', { y: 15, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+              .to(progress, { width: '100%', duration: 1.2, ease: 'power2.inOut' }, '-=0.2')
+              // 2. Flash & Curtain Exit (Slide Up smoothly)
+              .to('#bb-intro-curtain .relative', { scale: 1.04, opacity: 0, duration: 0.45, ease: 'power2.in', delay: 0.25 })
+              .to(curtain, {
+                  yPercent: -100,
+                  duration: 0.95,
+                  ease: 'power4.inOut',
+                  onComplete: () => {
+                      curtain.remove();
+                  }
+              }, '-=0.1')
+              // 3. Main Site Reveal
+              .from('.jump-header', {
+                  y: -50,
+                  opacity: 0,
+                  duration: 0.7,
+                  ease: 'power3.out'
+              }, '-=0.5')
+              .from('.jump-hero', {
+                  scale: 0.95,
+                  opacity: 0,
+                  y: 40,
+                  duration: 0.9,
+                  ease: 'power3.out'
+              }, '-=0.6')
+              .from('.jump-hero-content > *', {
+                  y: 30,
+                  opacity: 0,
+                  duration: 0.7,
+                  stagger: 0.1,
+                  ease: 'power3.out'
+              }, '-=0.5')
+              .from('.jump-controls-panel', {
+                  y: 20,
+                  opacity: 0,
+                  duration: 0.6,
+                  ease: 'power2.out'
+              }, '-=0.3');
+        } else {
+            // Fallback if curtain not found
+            gsap.from('.jump-header', { y: -50, opacity: 0, duration: 0.8, ease: 'power3.out' });
+            gsap.from('.jump-hero-content > *', { y: 30, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out', delay: 0.2 });
+        }
+
+        // Ambient Bubbles subtle GSAP float
+        gsap.to('.cloud-bubble-1', {
+            x: 60,
+            y: 40,
+            scale: 1.1,
+            duration: 9,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        });
+
+        gsap.to('.cloud-bubble-2', {
+            x: -50,
+            y: -35,
+            scale: 1.15,
+            duration: 11,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        });
+    }
+
+    // Animate Cards when rendered
+    function animateCards() {
+        if (!window.gsap) return;
+        const cards = document.querySelectorAll('.jump-card');
+        if (cards.length > 0) {
+            gsap.fromTo(
+                cards,
+                { y: 25, opacity: 0, scale: 0.97 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.45,
+                    stagger: 0.06,
+                    ease: 'power2.out'
+                }
+            );
         }
     }
 
@@ -491,4 +625,5 @@
 
     // Init
     initSupabase();
+    initAnimations();
 })();
