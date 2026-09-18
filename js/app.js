@@ -1,44 +1,12 @@
 // Blackboard Library Application Logic
-// Supports both Supabase (Real-time Cloud Sync) and Local Storage (Offline / Demo fallback)
+// Direct Supabase Cloud Storage (100% Cloud-Only, No LocalStorage)
 
 (function () {
-    // Initial Sample Data if running fresh
-    const INITIAL_SAMPLE_ITEMS = [
-        {
-            id: 'sample-1',
-            title: 'Design Inspiration - Dribbble',
-            url: 'https://dribbble.com',
-            description: 'แหล่งรวมไอเดียการออกแบบ UI/UX สวยๆ และ Trend ล่าสุดของปี 2026',
-            category: 'Design',
-            status: 'use',
-            created_at: new Date(Date.now() - 3600000 * 2).toISOString()
-        },
-        {
-            id: 'sample-2',
-            title: 'GitHub Repositories & Docs',
-            url: 'https://github.com',
-            description: 'ศูนย์กลางเก็บ Code และ Document งานร่วมกันระหว่างทีม',
-            category: 'Development',
-            status: 'use',
-            created_at: new Date(Date.now() - 3600000 * 5).toISOString()
-        },
-        {
-            id: 'sample-3',
-            title: 'Unsplash - Free High-Res Photos',
-            url: 'https://unsplash.com',
-            description: 'รูปภาพคุณภาพสูงสำหรับใช้งานในโปรเจกต์ (ยังไม่ได้ตัดสินใจเลือกภาพ)',
-            category: 'Resources',
-            status: 'not_use',
-            created_at: new Date(Date.now() - 3600000 * 12).toISOString()
-        }
-    ];
-
     // State
     let items = [];
     let currentFilter = 'all'; // 'all' | 'use' | 'not_use'
     let searchQuery = '';
     let supabase = null;
-    let isSupabaseActive = false;
 
     // DOM Elements
     const gridContainer = document.getElementById('libraryGrid');
@@ -76,13 +44,6 @@
     const iframeFallback = document.getElementById('iframeFallback');
     const fallbackLink = document.getElementById('fallbackLink');
 
-    // Config Modal
-    const configModal = document.getElementById('configModal');
-    const closeConfigModalBtn = document.getElementById('closeConfigModalBtn');
-    const configForm = document.getElementById('configForm');
-    const cfgSupabaseUrl = document.getElementById('cfgSupabaseUrl');
-    const cfgSupabaseKey = document.getElementById('cfgSupabaseKey');
-
     // --- Helper: Extract domain and favicon ---
     function getDomain(url) {
         try {
@@ -101,26 +62,23 @@
     // --- Supabase Setup ---
     function initSupabase() {
         const config = window.SUPABASE_CONFIG || {};
-        const savedUrl = localStorage.getItem('bb_supabase_url') || config.url;
-        const savedKey = localStorage.getItem('bb_supabase_key') || config.anonKey;
 
-        if (savedUrl && savedKey && window.supabase) {
+        if (config.url && config.anonKey && window.supabase) {
             try {
-                supabase = window.supabase.createClient(savedUrl, savedKey);
-                isSupabaseActive = true;
-                setConnectionBadge('Supabase Live (ซิงค์ทุกคน)', true);
+                supabase = window.supabase.createClient(config.url, config.anonKey);
+                setConnectionBadge('Supabase Live (เชื่อมต่อคลาวด์แล้ว)', true);
                 fetchSupabaseData();
                 subscribeToRealtime();
                 return;
             } catch (err) {
-                console.warn('Supabase init failed, fallback to local:', err);
+                console.error('Supabase init error:', err);
+                setConnectionBadge('เชื่อมต่อ Supabase ผิดพลาด', false);
+                showErrorState('ไม่สามารถเชื่อมต่อ Supabase ได้: ' + err.message);
             }
+        } else {
+            setConnectionBadge('ยังไม่ได้ระบุ Supabase URL/Key', false);
+            showErrorState('กรุณาระบุ URL และ Anon Key ใน js/config.js');
         }
-
-        // Fallback to Local Storage
-        isSupabaseActive = false;
-        setConnectionBadge('Local Storage (โหมดจำลอง)', false);
-        loadLocalData();
     }
 
     function setConnectionBadge(text, isOnline) {
@@ -133,18 +91,33 @@
         }
     }
 
+    function showErrorState(msg) {
+        gridContainer.innerHTML = `
+            <div class="empty-state">
+                <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #fb7185;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <h3>เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล</h3>
+                <p style="color: #cbd5e1;">${escapeHtml(msg)}</p>
+                <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 8px;">
+                    อย่าลืมนำสคริปต์ใน <code>database/schema.sql</code> ไปรันใน Supabase SQL Editor
+                </p>
+            </div>
+        `;
+    }
+
     // --- Realtime Subscriptions ---
     function subscribeToRealtime() {
         if (!supabase) return;
         supabase
             .channel('public:items')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'items' }, (payload) => {
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'items' }, () => {
                 fetchSupabaseData();
             })
             .subscribe();
     }
 
-    // --- Data Fetching & Sync ---
+    // --- Data Fetching from Supabase Only ---
     async function fetchSupabaseData() {
         if (!supabase) return;
         try {
@@ -153,82 +126,62 @@
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (error) throw error;
+            if (error) {
+                console.error('Fetch error:', error);
+                if (error.code === '42P01') {
+                    showErrorState('ยังไม่พบตาราง "items" ใน Supabase กรุณารันคำสั่งใน database/schema.sql ที่ Supabase SQL Editor');
+                } else {
+                    showErrorState(error.message);
+                }
+                return;
+            }
+
             items = data || [];
             renderGrid();
         } catch (err) {
             console.error('Error fetching Supabase items:', err);
-            loadLocalData();
+            showErrorState(err.message);
         }
-    }
-
-    function loadLocalData() {
-        const saved = localStorage.getItem('blackboard_items');
-        if (saved) {
-            try {
-                items = JSON.parse(saved);
-            } catch (e) {
-                items = INITIAL_SAMPLE_ITEMS;
-            }
-        } else {
-            items = INITIAL_SAMPLE_ITEMS;
-            saveLocalData();
-        }
-        renderGrid();
-    }
-
-    function saveLocalData() {
-        localStorage.setItem('blackboard_items', JSON.stringify(items));
-        renderGrid();
     }
 
     // --- Actions: Toggle Status (Use / Not Use) ---
     window.toggleItemStatus = async function (id) {
         const item = items.find((i) => i.id === id);
-        if (!item) return;
+        if (!item || !supabase) return;
 
         const newStatus = item.status === 'use' ? 'not_use' : 'use';
 
-        if (isSupabaseActive && supabase) {
-            // Optimistic UI update
-            item.status = newStatus;
-            renderGrid();
+        // Optimistic UI update
+        item.status = newStatus;
+        renderGrid();
 
-            const { error } = await supabase
-                .from('items')
-                .update({ status: newStatus })
-                .eq('id', id);
+        const { error } = await supabase
+            .from('items')
+            .update({ status: newStatus })
+            .eq('id', id);
 
-            if (error) {
-                alert('เกิดข้อผิดพลาดในการเปลี่ยนสถานะ: ' + error.message);
-                fetchSupabaseData();
-            }
-        } else {
-            item.status = newStatus;
-            saveLocalData();
+        if (error) {
+            alert('เกิดข้อผิดพลาดในการเปลี่ยนสถานะ: ' + error.message);
+            fetchSupabaseData();
         }
     };
 
     // --- Actions: Delete Item ---
     window.deleteItem = async function (id) {
         if (!confirm('คุณแน่ใจว่าต้องการลบรายการนี้ออกจาก Library?')) return;
+        if (!supabase) return;
 
-        if (isSupabaseActive && supabase) {
-            items = items.filter((i) => i.id !== id);
-            renderGrid();
+        items = items.filter((i) => i.id !== id);
+        renderGrid();
 
-            const { error } = await supabase
-                .from('items')
-                .delete()
-                .eq('id', id);
+        const { error } = await supabase
+            .from('items')
+            .delete()
+            .eq('id', id);
 
-            if (error) {
-                alert('ไม่สามารถลบรายการได้: ' + error.message);
-                fetchSupabaseData();
-            }
-        } else {
-            items = items.filter((i) => i.id !== id);
-            saveLocalData();
+        if (error) {
+            alert('ไม่สามารถลบรายการได้: ' + error.message);
+            fetchSupabaseData();
         }
     };
 
@@ -246,61 +199,60 @@
         previewIframe.src = fullUrl;
         iframeFallback.style.display = 'none';
 
-        // Some websites block iframes via X-Frame-Options, so provide smooth fallback
-        const iframeTimeout = setTimeout(() => {
-            // Check if iframe was blocked or still loading
-        }, 3000);
-
         previewIframe.onerror = () => {
-            clearTimeout(iframeTimeout);
             iframeFallback.style.display = 'flex';
         };
 
         previewModal.style.display = 'flex';
     };
 
-    // --- Add New Item ---
+    // --- Add New Item directly to Supabase ---
     addItemForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (!supabase) {
+            alert('ยังไม่ได้เชื่อมต่อฐานข้อมูล Supabase');
+            return;
+        }
 
         let rawUrl = inputUrl.value.trim();
         if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
             rawUrl = 'https://' + rawUrl;
         }
 
-        const newItem = {
-            id: 'item_' + Date.now(),
-            title: inputTitle.value.trim(),
+        const title = inputTitle.value.trim();
+        const description = inputDesc.value.trim();
+        const category = inputCategory.value || 'General';
+
+        const submitBtn = addItemForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'กำลังบันทึก...';
+
+        const { error } = await supabase.from('items').insert([{
+            title: title,
             url: rawUrl,
-            description: inputDesc.value.trim(),
-            category: inputCategory.value || 'General',
-            status: 'use',
-            created_at: new Date().toISOString()
-        };
+            description: description,
+            category: category,
+            status: 'use'
+        }]);
 
-        if (isSupabaseActive && supabase) {
-            const { error } = await supabase.from('items').insert([{
-                title: newItem.title,
-                url: newItem.url,
-                description: newItem.description,
-                category: newItem.category,
-                status: newItem.status
-            }]);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            บันทึกเข้า Library
+        `;
 
-            if (error) {
-                alert('เกิดข้อผิดพลาดในการบันทึกลง Supabase: ' + error.message);
-                return;
-            }
-            await fetchSupabaseData();
-        } else {
-            items.unshift(newItem);
-            saveLocalData();
+        if (error) {
+            alert('เกิดข้อผิดพลาดในการบันทึกลง Supabase: ' + error.message);
+            return;
         }
 
         // Close and reset modal
         closeModal(addModal);
         addItemForm.reset();
         livePreviewContainer.style.display = 'none';
+        await fetchSupabaseData();
     });
 
     // --- Realtime Input preview inside Modal ---
@@ -475,34 +427,12 @@
     openAddModalBtn.addEventListener('click', () => openModal(addModal));
     closeAddModalBtn.addEventListener('click', () => closeModal(addModal));
     cancelAddBtn.addEventListener('click', () => closeModal(addModal));
-
     closePreviewModalBtn.addEventListener('click', () => closeModal(previewModal));
-
-    // Config Modal Controls
-    connectionStatus.addEventListener('click', () => {
-        cfgSupabaseUrl.value = localStorage.getItem('bb_supabase_url') || (window.SUPABASE_CONFIG ? window.SUPABASE_CONFIG.url : '');
-        cfgSupabaseKey.value = localStorage.getItem('bb_supabase_key') || (window.SUPABASE_CONFIG ? window.SUPABASE_CONFIG.anonKey : '');
-        openModal(configModal);
-    });
-
-    closeConfigModalBtn.addEventListener('click', () => closeModal(configModal));
-    document.getElementById('cancelConfigBtn').addEventListener('click', () => closeModal(configModal));
-
-    configForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const url = cfgSupabaseUrl.value.trim();
-        const key = cfgSupabaseKey.value.trim();
-        localStorage.setItem('bb_supabase_url', url);
-        localStorage.setItem('bb_supabase_key', key);
-        closeModal(configModal);
-        initSupabase();
-    });
 
     // Close on outside backdrop click
     window.addEventListener('click', (e) => {
         if (e.target === addModal) closeModal(addModal);
         if (e.target === previewModal) closeModal(previewModal);
-        if (e.target === configModal) closeModal(configModal);
     });
 
     // --- Initialize ---

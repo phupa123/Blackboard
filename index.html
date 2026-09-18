@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blackboard Library - คลังรวมงานและคัดเลือก Link/Resource</title>
-    <meta name="description" content="พื้นที่แชร์งานและคัดเลือก Link ใน Library ระหว่างทีม แสดงผลพรีวิวและซิงค์ข้อมูล Real-time">
+    <meta name="description" content="พื้นที่แชร์งานและคัดเลือก Link ใน Library ระหว่างทีม แสดงผลพรีวิวและซิงค์ข้อมูล Real-time ผ่าน Supabase">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- Project Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <!-- Ambient Dynamic Background Glows -->
@@ -41,10 +41,10 @@
 
             <div class="nav-actions">
                 <!-- Database Connection Status Badge -->
-                <button class="connection-status" id="connectionStatus" title="คลิกเพื่อตั้งค่า Supabase">
+                <div class="connection-status" id="connectionStatus">
                     <span class="status-dot demo"></span>
-                    <span id="connectionText">กำลังตรวจสอบการเชื่อมต่อ...</span>
-                </button>
+                    <span id="connectionText">กำลังเชื่อมต่อ Supabase...</span>
+                </div>
 
                 <!-- Add New Item Button -->
                 <button class="btn-primary" id="openAddModalBtn">
@@ -87,7 +87,7 @@
 
         <!-- Library Items Grid -->
         <main class="library-grid" id="libraryGrid">
-            <!-- Cards are injected dynamically by app.js -->
+            <!-- Cards are injected dynamically by js/app.js -->
         </main>
     </div>
 
@@ -203,45 +203,8 @@
         </div>
     </div>
 
-    <!-- Modal: ตั้งค่าเชื่อมต่อ Supabase (Supabase Configuration Modal) -->
-    <div class="modal-backdrop" id="configModal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>ตั้งค่าเชื่อมต่อ Supabase</h2>
-                <button class="close-btn" id="closeConfigModalBtn">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-
-            <form id="configForm">
-                <div class="modal-body">
-                    <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 6px;">
-                        นำ Project URL และ Anon Key จากแดชบอร์ด Supabase (Project Settings -> API) มาใส่ที่นี่ เพื่อเปิดการซิงค์ข้อมูลกับผู้ใช้คนอื่นๆ แบบ Real-time ทันที
-                    </p>
-
-                    <div class="form-group">
-                        <label class="form-label" for="cfgSupabaseUrl">Supabase Project URL</label>
-                        <input type="url" id="cfgSupabaseUrl" class="form-input" placeholder="https://your-project.supabase.co">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="cfgSupabaseKey">Supabase Anon Public Key</label>
-                        <input type="password" id="cfgSupabaseKey" class="form-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" id="cancelConfigBtn">ยกเลิก</button>
-                    <button type="submit" class="btn-primary">บันทึกและเชื่อมต่อ</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Config & Logic Script -->
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
