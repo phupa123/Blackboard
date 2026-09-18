@@ -151,17 +151,28 @@
             <li class="jump-nav-item"><a href="#">หน้าแรก</a></li>
             <li class="jump-nav-item"><a href="#librarySection" class="active">คลังงาน (Library)</a></li>
             <li class="jump-nav-item">
+                <a href="admin.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-sky-600 bg-slate-100 hover:bg-sky-50 border border-slate-200 transition-all">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    หลังบ้าน Admin
+                </a>
+            </li>
+            <li class="jump-nav-item">
                 <button class="nav-cta-btn" id="openAddModalBtn">+ เพิ่มงานใหม่</button>
             </li>
         </ul>
 
-        <!-- Mobile Header Quick Add Button -->
-        <button class="mobile-header-btn" id="mobileHeaderAddBtn">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-            </svg>
-            + เพิ่มงาน
-        </button>
+        <!-- Mobile Header Quick Add & Admin Button -->
+        <div class="flex items-center gap-2 lg:hidden">
+            <a href="admin.html" class="p-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 flex items-center gap-1" title="เข้าสู่ระบบ Admin">
+                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </a>
+            <button class="mobile-header-btn" id="mobileHeaderAddBtn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                </svg>
+                + เพิ่มงาน
+            </button>
+        </div>
     </header>
 
     <!-- Hero Section -->

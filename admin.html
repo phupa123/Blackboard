@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackBoard Admin Portal - กระดานดำสัมพันธ์ ครั้งที่ 21</title>
+    
+    <!-- Google Fonts: Prompt & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            accent: '#0ea5e9',
+                            mint: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        prompt: ['Prompt', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'Prompt', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Sky Blue Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>">
+</head>
+<body class="bg-[#0b0f17] text-slate-100 font-prompt min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
+
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-40 bg-[#0d1424]/90 backdrop-blur-md border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-cyan-400 flex items-center justify-center text-white font-black text-lg shadow-lg shadow-sky-500/20 group-hover:scale-105 transition-transform">
+                    BB
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-base sm:text-lg text-white leading-tight flex items-center gap-2">
+                        BlackBoard <span class="text-xs px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30">ADMIN</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">ระบบจัดการหลังบ้าน กระดานดำสัมพันธ์ ครั้งที่ 21</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                กลับไปหน้าหลัก
+            </a>
+            <div id="authHeaderArea">
+                <!-- User profile & Logout or Login btn -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Login Screen (Shown when not authenticated or not an admin) -->
+        <section id="loginSection" class="my-12 flex flex-col items-center justify-center text-center max-w-md mx-auto p-8 rounded-3xl bg-slate-900/60 border border-slate-800 shadow-2xl backdrop-blur-xl">
+            <div class="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 mb-6 shadow-inner">
+                <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+            </div>
+            
+            <h2 class="text-2xl font-black text-white mb-2 font-prompt">เข้าสู่ระบบผู้ดูแล (Admin)</h2>
+            <p class="text-sm text-slate-400 mb-8 leading-relaxed">
+                เฉพาะผู้ดูแลที่มีรายชื่อ Gmail ในระบบเท่านั้นที่สามารถจัดการงานและสิทธิ์ของโครงการได้
+            </p>
+
+            <!-- Google Login Button -->
+            <button id="googleLoginBtn" class="w-full flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm transition-all shadow-lg hover:shadow-sky-500/10 active:scale-[0.98]">
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                เข้าสู่ระบบด้วย Google (Gmail)
+            </button>
+
+            <!-- Access Denied Message Box -->
+            <div id="accessDeniedBox" class="hidden mt-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs text-left leading-relaxed">
+                <p class="font-bold mb-1 flex items-center gap-1.5 text-rose-400">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    บัญชีของคุณไม่มีสิทธิ์ผู้ดูแล
+                </p>
+                <p id="deniedEmailText" class="text-slate-300 mb-2"></p>
+                <p>กรุณาติดต่อผู้ดูแลระบบหลักเพื่อเพิ่มอีเมลนี้ลงในรายชื่อแอดมิน</p>
+                <button id="logoutDeniedBtn" class="mt-3 text-xs underline text-rose-400 hover:text-rose-300">ออกจากระบบ</button>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard Section (Shown when authenticated & verified admin) -->
+        <section id="dashboardSection" class="hidden space-y-8">
+            
+            <!-- Dashboard Top Summary & Actions -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/50 p-6 rounded-3xl border border-slate-800">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">แผงบริหารจัดการระบบ</h2>
+                    <p class="text-sm text-slate-400 mt-1">
+                        ยินดีต้อนรับ <span id="adminGreetingEmail" class="text-sky-400 font-bold"></span>
+                    </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button id="openAdminModalBtn" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold border border-slate-700 transition-all">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        จัดการผู้ดูแล (<span id="adminCountBadge">0</span>)
+                    </button>
+                    <button id="adminAddNewBtn" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-600 hover:to-cyan-600 text-white text-sm font-bold shadow-lg shadow-sky-500/20 transition-all active:scale-95">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                        + เพิ่มงานใหม่
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Overview Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-400 uppercase tracking-wider font-mono">งานทั้งหมด</p>
+                        <h3 id="statTotalItems" class="text-3xl font-black text-white mt-1">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    </div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-emerald-400 uppercase tracking-wider font-mono">สถานะ: ใช้ (Active)</p>
+                        <h3 id="statUseItems" class="text-3xl font-black text-emerald-400 mt-1">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-rose-400 uppercase tracking-wider font-mono">สถานะ: ไม่ใช้ (Archived)</p>
+                        <h3 id="statNotUseItems" class="text-3xl font-black text-rose-400 mt-1">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Items Table Section -->
+            <div class="bg-slate-900/50 rounded-3xl border border-slate-800 overflow-hidden shadow-xl">
+                <div class="p-5 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <h3 class="text-lg font-bold text-white">รายการทรัพยากรและงานทั้งหมด</h3>
+                    <div class="w-full sm:w-72">
+                        <input type="text" id="adminSearchInput" placeholder="ค้นหาชื่องาน, ลิงก์, หมวดหมู่..." class="w-full px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-sky-500">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-slate-800/60 text-xs uppercase text-slate-400 font-mono tracking-wider">
+                            <tr>
+                                <th class="py-4 px-6">หัวข้อ / ลิงก์</th>
+                                <th class="py-4 px-4">หมวดหมู่</th>
+                                <th class="py-4 px-4">สถานะ</th>
+                                <th class="py-4 px-4">วันที่เพิ่ม</th>
+                                <th class="py-4 px-6 text-right">การจัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminItemsTableBody" class="divide-y divide-slate-800">
+                            <!-- Populated by admin.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Modal: เพิ่ม / แก้ไขงาน (Admin Add/Edit Item Modal) -->
+    <div id="itemModalOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-[#0f172a] border border-slate-700 w-full max-w-lg rounded-3xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
+                <h3 id="itemModalTitle" class="text-lg font-bold text-white">เพิ่มงาน / ทรัพยากรใหม่</h3>
+                <button id="closeItemModalBtn" class="text-slate-400 hover:text-white">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <form id="adminItemForm" class="space-y-4">
+                <input type="hidden" id="adminItemId" value="">
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">ชื่อหัวข้อ <span class="text-rose-400">*</span></label>
+                    <input type="text" id="adminItemTitle" required placeholder="เช่น Next.js 15 Starter, AI Guideline" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Link เว็บไซต์ / URL <span class="text-rose-400">*</span></label>
+                    <input type="text" id="adminItemUrl" required placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">หมวดหมู่นวัตกรรม</label>
+                    <select id="adminItemCategory" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-500">
+                        <option value="AI & Tech">ปัญญาประดิษฐ์ & เทคโนโลยี (AI & Tech)</option>
+                        <option value="Education">นวัตกรรมการศึกษา (Education)</option>
+                        <option value="Design & UX">ออกแบบ & UX/UI (Design & UX)</option>
+                        <option value="Development">การพัฒนาโปรแกรม (Development)</option>
+                        <option value="Research">งานวิจัย & เอกสารอ้างอิง (Research)</option>
+                        <option value="General">ทั่วไป (General)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">สถานะ</label>
+                    <select id="adminItemStatus" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-500">
+                        <option value="use">ใช้ (Active)</option>
+                        <option value="not_use">ไม่ใช้ (Archived)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">คำอธิบายเพิ่มเติม</label>
+                    <textarea id="adminItemDesc" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม" class="w-full px-4 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-500"></textarea>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+                    <button type="button" id="cancelItemModalBtn" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800">ยกเลิก</button>
+                    <button type="submit" id="saveItemBtn" class="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-sky-500 hover:bg-sky-600 transition-colors shadow-lg shadow-sky-500/20">
+                        บันทึกข้อมูล
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: จัดการผู้ดูแลระบบ (Manage Admins Modal) -->
+    <div id="adminsModalOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-[#0f172a] border border-slate-700 w-full max-w-xl rounded-3xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
+                <div>
+                    <h3 class="text-lg font-bold text-white">จัดการทีมผู้ดูแล (Admin Whitelist)</h3>
+                    <p class="text-xs text-slate-400">อีเมล Gmail ที่ระบุจะมีสิทธิ์จัดการงานทั้งหมดในโปรเจกต์</p>
+                </div>
+                <button id="closeAdminsModalBtn" class="text-slate-400 hover:text-white">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Add Admin Form -->
+            <form id="addAdminForm" class="flex gap-3 mb-6">
+                <input type="email" id="newAdminEmail" required placeholder="ระบุ Gmail ผู้ดูแลคนใหม่ (เช่น team@gmail.com)" class="flex-1 px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-500">
+                <button type="submit" id="submitNewAdminBtn" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm whitespace-nowrap shadow-md">
+                    + เพิ่มผู้ดูแล
+                </button>
+            </form>
+
+            <!-- Admin List Table -->
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-800/80 text-xs font-mono uppercase text-slate-400">
+                        <tr>
+                            <th class="py-3 px-4">อีเมล Gmail</th>
+                            <th class="py-3 px-4">สิทธิ์</th>
+                            <th class="py-3 px-4 text-right">การจัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminsListTableBody" class="divide-y divide-slate-800">
+                        <!-- Populated by admin.js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
