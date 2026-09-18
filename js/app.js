@@ -496,62 +496,111 @@
         }
     }
 
-    // GSAP Page Intro & Grand National Entrance Sequence
+    // GSAP Page Intro & Artisanal Exhibition Grade Sequence
     function initAnimations() {
         if (!window.gsap) return;
 
         const curtain = document.getElementById('bb-intro-curtain');
-        const progress = document.getElementById('bb-intro-progress');
+        const counterEl = document.getElementById('bb-intro-counter');
+        const statusText = document.getElementById('bb-intro-status-text');
 
-        if (curtain) {
-            // Master Timeline
+        if (curtain && counterEl) {
             const tl = gsap.timeline();
 
-            // 1. Elements inside intro appear with luxury easing
-            tl.from('.bb-intro-badge', { y: -25, opacity: 0, duration: 0.6, ease: 'back.out(1.7)' })
-              .from('.bb-intro-emblem-wrap', { scale: 0.75, opacity: 0, rotationY: 25, duration: 0.9, ease: 'power3.out' }, '-=0.3')
-              .from('.bb-intro-title', { y: 25, opacity: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
-              .from('.bb-intro-sub', { y: 15, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
-              .to(progress, { width: '100%', duration: 1.2, ease: 'power2.inOut' }, '-=0.2')
-              // 2. Flash & Curtain Exit (Slide Up smoothly)
-              .to('#bb-intro-curtain .relative', { scale: 1.04, opacity: 0, duration: 0.45, ease: 'power2.in', delay: 0.25 })
-              .to(curtain, {
-                  yPercent: -100,
-                  duration: 0.95,
-                  ease: 'power4.inOut',
-                  onComplete: () => {
-                      curtain.remove();
-                  }
-              }, '-=0.1')
-              // 3. Main Site Reveal
-              .from('.jump-header', {
-                  y: -50,
-                  opacity: 0,
-                  duration: 0.7,
-                  ease: 'power3.out'
-              }, '-=0.5')
-              .from('.jump-hero', {
-                  scale: 0.95,
-                  opacity: 0,
-                  y: 40,
-                  duration: 0.9,
-                  ease: 'power3.out'
-              }, '-=0.6')
-              .from('.jump-hero-content > *', {
-                  y: 30,
-                  opacity: 0,
-                  duration: 0.7,
-                  stagger: 0.1,
-                  ease: 'power3.out'
-              }, '-=0.5')
-              .from('.jump-controls-panel', {
-                  y: 20,
-                  opacity: 0,
-                  duration: 0.6,
-                  ease: 'power2.out'
-              }, '-=0.3');
+            // Progress object for counter interpolation
+            const progressTracker = { value: 0 };
+
+            // Status message updates at key percentages
+            const statusMessages = [
+                { threshold: 15, text: 'AUTHENTICATING NETWORK ARCHIVE' },
+                { threshold: 50, text: 'SYNCHRONIZING REPOSITORY DATABASE' },
+                { threshold: 85, text: 'PREPARING EXHIBITION STAGE' },
+                { threshold: 99, text: 'READY • WELCOME TO EDITION XXI' }
+            ];
+
+            // 1. Initial State
+            gsap.set(['.bb-curtain-left', '.bb-curtain-right'], { xPercent: 0 });
+
+            // 2. Entrance choreography
+            tl.from('.bb-intro-core > *', {
+                opacity: 0,
+                y: 20,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: 'power3.out'
+            })
+            .from('.bb-emblem-img', {
+                scale: 0.85,
+                opacity: 0,
+                duration: 1.2,
+                ease: 'power2.out'
+            }, '-=0.6')
+            // Shimmer light sweep across the emblem
+            .to('.bb-shimmer-sweep', {
+                x: '300%',
+                duration: 1.1,
+                ease: 'power2.inOut'
+            }, '-=0.5')
+            // Counter numbers running 00 -> 100%
+            .to(progressTracker, {
+                value: 100,
+                duration: 1.8,
+                ease: 'power2.inOut',
+                onUpdate: () => {
+                    const currentVal = Math.floor(progressTracker.value);
+                    counterEl.textContent = currentVal < 10 ? `0${currentVal}` : `${currentVal}`;
+                    
+                    for (const s of statusMessages) {
+                        if (currentVal >= s.threshold && statusText) {
+                            statusText.textContent = s.text;
+                        }
+                    }
+                }
+            }, '-=0.8')
+            // Breathing pause at 100%
+            .to('.bb-intro-core', {
+                opacity: 0,
+                scale: 0.96,
+                duration: 0.5,
+                ease: 'power2.in',
+                delay: 0.2
+            })
+            // 3. Cinematic Theater Dual Curtain Reveal (Split Left & Right)
+            .to('.bb-curtain-left', {
+                xPercent: -100,
+                duration: 1.1,
+                ease: 'power4.inOut'
+            })
+            .to('.bb-curtain-right', {
+                xPercent: 100,
+                duration: 1.1,
+                ease: 'power4.inOut',
+                onComplete: () => {
+                    curtain.remove();
+                }
+            }, '<')
+            // 4. Main Site Emerges
+            .from('.jump-header', {
+                y: -40,
+                opacity: 0,
+                duration: 0.7,
+                ease: 'power3.out'
+            }, '-=0.6')
+            .from('.jump-hero', {
+                scale: 0.94,
+                y: 35,
+                opacity: 0,
+                duration: 0.9,
+                ease: 'power3.out'
+            }, '-=0.5')
+            .from('.jump-hero-content > *', {
+                y: 25,
+                opacity: 0,
+                duration: 0.6,
+                stagger: 0.08,
+                ease: 'power2.out'
+            }, '-=0.4');
         } else {
-            // Fallback if curtain not found
             gsap.from('.jump-header', { y: -50, opacity: 0, duration: 0.8, ease: 'power3.out' });
             gsap.from('.jump-hero-content > *', { y: 30, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out', delay: 0.2 });
         }
