@@ -14,13 +14,19 @@
     <!-- Supabase JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Green Bolt Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238ed600'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+    <!-- Sky Blue Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>">
     
     <!-- Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <!-- Cloud Ambient Animated Background -->
+    <div class="cloud-ambient-bg">
+        <div class="cloud-bubble cloud-bubble-1"></div>
+        <div class="cloud-bubble cloud-bubble-2"></div>
+    </div>
+
     <!-- Header Navigation -->
     <header class="jump-header">
         <a href="#" class="jump-logo-area">
@@ -88,12 +94,12 @@
                     <span class="filter-counter" id="countAll">0</span>
                 </button>
                 <button class="filter-pill" data-filter="use">
-                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #8ed600; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
                     ใช้ (Active)
                     <span class="filter-counter" id="countUse">0</span>
                 </button>
                 <button class="filter-pill" data-filter="not_use">
-                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #fb7185; display: inline-block;"></span>
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #f43f5e; display: inline-block;"></span>
                     ไม่ใช้ (Archived)
                     <span class="filter-counter" id="countNotUse">0</span>
                 </button>
@@ -179,13 +185,13 @@
                     </div>
 
                     <!-- Live URL Preview -->
-                    <div id="livePreviewContainer" style="display: none; background: #0d1219; border: 1px solid rgba(142, 214, 0, 0.35); border-radius: 12px; padding: 14px; align-items: center; gap: 14px;">
-                        <div style="width: 52px; height: 52px; border-radius: 10px; background: #161f2c; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden;">
+                    <div id="livePreviewContainer" style="display: none; background: #f8fafc; border: 1px solid rgba(2, 132, 199, 0.25); border-radius: 12px; padding: 14px; align-items: center; gap: 14px;">
+                        <div style="width: 52px; height: 52px; border-radius: 10px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
                             <img id="previewFavicon" src="" alt="Favicon" style="width: 32px; height: 32px;">
                         </div>
                         <div style="overflow: hidden;">
-                            <h4 id="previewTitleText" style="font-size: 0.92rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">หัวข้อ</h4>
-                            <p id="previewDomain" style="font-size: 0.8rem; color: #8ed600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">domain.com</p>
+                            <h4 id="previewTitleText" style="font-size: 0.94rem; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">หัวข้อ</h4>
+                            <p id="previewDomain" style="font-size: 0.82rem; color: #0284c7; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">domain.com</p>
                         </div>
                     </div>
 
@@ -244,12 +250,12 @@
 
             <div style="flex: 1; position: relative; background: #fff;">
                 <iframe id="previewIframe" style="width: 100%; height: 100%; border: none;" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
-                <div id="iframeFallback" style="display: none; position: absolute; inset: 0; background: #0d1219; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center;">
-                    <svg width="50" height="50" fill="none" stroke="#8ed600" viewBox="0 0 24 24">
+                <div id="iframeFallback" style="display: none; position: absolute; inset: 0; background: #f8fafc; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center;">
+                    <svg width="52" height="52" fill="none" stroke="#0284c7" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                     </svg>
-                    <h3 style="color: #fff; font-size: 1.2rem; font-weight: 700;">เว็บไซต์นี้มีระบบความปลอดภัยป้องกันการฝัง Preview (X-Frame-Options)</h3>
-                    <p style="color: #a0aec0; max-width: 460px;">คุณสามารถคลิกปุ่มด้านล่างเพื่อเปิดหน้าเว็บจริงได้โดยตรง</p>
+                    <h3 style="color: #0f172a; font-size: 1.25rem; font-weight: 800;">เว็บไซต์นี้มีระบบความปลอดภัยป้องกันการฝัง Preview (X-Frame-Options)</h3>
+                    <p style="color: #475569; max-width: 460px;">คุณสามารถคลิกปุ่มด้านล่างเพื่อเปิดหน้าเว็บจริงได้โดยตรง</p>
                     <a id="fallbackLink" href="#" target="_blank" rel="noopener noreferrer" class="btn-jump-primary">
                         เปิดหน้าเว็บจริงในแท็บใหม่
                     </a>

@@ -95,13 +95,13 @@
 
     function showErrorState(msg) {
         gridContainer.innerHTML = `
-            <div style="text-align: center; padding: 60px 20px; background: #161f2c; border: 1px dashed rgba(142, 214, 0, 0.4); border-radius: 20px; grid-column: 1 / -1;">
-                <svg width="56" height="56" fill="none" stroke="#8ed600" viewBox="0 0 24 24" style="margin-bottom: 16px;">
+            <div style="text-align: center; padding: 60px 20px; background: #ffffff; border: 1px dashed rgba(2, 132, 199, 0.4); border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); grid-column: 1 / -1;">
+                <svg width="56" height="56" fill="none" stroke="#0284c7" viewBox="0 0 24 24" style="margin-bottom: 16px;">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
-                <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: #fff; font-weight: 800;">ไม่สามารถดึงข้อมูลจากตารางได้</h3>
-                <p style="color: #a0aec0; max-width: 500px; margin: 0 auto 16px;">${escapeHtml(msg)}</p>
-                <p style="font-size: 0.88rem; color: #8ed600;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: #0f172a; font-weight: 800;">ไม่สามารถดึงข้อมูลจากตารางได้</h3>
+                <p style="color: #475569; max-width: 500px; margin: 0 auto 16px;">${escapeHtml(msg)}</p>
+                <p style="font-size: 0.88rem; color: #0284c7; font-weight: 600;">
                     💡 รันคำสั่งใน <code>database/schema.sql</code> ที่ Supabase SQL Editor เพื่อสร้างตาราง
                 </p>
             </div>
@@ -341,12 +341,12 @@
 
         if (filtered.length === 0) {
             gridContainer.innerHTML = `
-                <div style="text-align: center; padding: 70px 20px; background: #161f2c; border: 1px dashed rgba(142, 214, 0, 0.3); border-radius: 20px; grid-column: 1 / -1;">
-                    <svg width="60" height="60" fill="none" stroke="#8ed600" viewBox="0 0 24 24" style="margin-bottom: 16px;">
+                <div style="text-align: center; padding: 70px 20px; background: #ffffff; border: 1px dashed rgba(2, 132, 199, 0.35); border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); grid-column: 1 / -1;">
+                    <svg width="60" height="60" fill="none" stroke="#0284c7" viewBox="0 0 24 24" style="margin-bottom: 16px;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                     </svg>
-                    <h3 style="font-size: 1.4rem; color: #fff; font-weight: 800; margin-bottom: 8px;">ยังไม่พบรายการในหมวดนี้</h3>
-                    <p style="color: #a0aec0; margin-bottom: 24px; max-width: 440px; margin-left: auto; margin-right: auto;">
+                    <h3 style="font-size: 1.4rem; color: #0f172a; font-weight: 800; margin-bottom: 8px;">ยังไม่พบรายการในหมวดนี้</h3>
+                    <p style="color: #475569; margin-bottom: 24px; max-width: 440px; margin-left: auto; margin-right: auto;">
                         เริ่มต้นเพิ่มงานและทรัพยากรชิ้นแรกของคุณ เพื่อให้ทีมสามารถเข้ามาคัดเลือกและใช้งานร่วมกันได้ทันที
                     </p>
                     <button class="btn-jump-primary" onclick="document.getElementById('openAddModalBtn').click()">
