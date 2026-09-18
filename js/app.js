@@ -473,8 +473,13 @@
         openModal(itemModal);
     }
 
+    const mobileHeaderAddBtn = document.getElementById('mobileHeaderAddBtn');
+    const mobileFabBtn = document.getElementById('mobileFabBtn');
+
     if (openAddModalBtn) openAddModalBtn.addEventListener('click', openAddModalHandler);
     if (heroAddBtn) heroAddBtn.addEventListener('click', openAddModalHandler);
+    if (mobileHeaderAddBtn) mobileHeaderAddBtn.addEventListener('click', openAddModalHandler);
+    if (mobileFabBtn) mobileFabBtn.addEventListener('click', openAddModalHandler);
     if (closeItemModalBtn) closeItemModalBtn.addEventListener('click', () => closeModal(itemModal));
     if (cancelItemBtn) cancelItemBtn.addEventListener('click', () => closeModal(itemModal));
     if (closePreviewModalBtn) closePreviewModalBtn.addEventListener('click', () => closeModal(previewModal));
