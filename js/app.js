@@ -535,11 +535,17 @@
                 duration: 1.2,
                 ease: 'power2.out'
             }, '-=0.6')
-            // Realistic Soft Light Sweep (Fade แสงนุ่มนวลจากซ้ายไปขวาบนผิวภาพตราสัญลักษณ์)
+            // 1. Background Ambient Light Sweep (แสงเงากวาดผ่านพื้นหลังซ้ายไปขวาอย่างนุ่มนวล)
+            .fromTo('.bb-bg-light-sweep',
+                { x: '-100%', opacity: 0 },
+                { x: '180%', opacity: 1, duration: 2.0, ease: 'power2.inOut' },
+                '-=0.9'
+            )
+            // 2. Realistic Soft Light Sweep (Fade แสงนุ่มนวลจากซ้ายไปขวาบนผิวภาพตราสัญลักษณ์)
             .fromTo('.bb-light-sweep', 
                 { xPercent: -100, opacity: 0 }, 
                 { xPercent: 120, opacity: 0.85, duration: 1.4, ease: 'power2.inOut' }, 
-                '-=0.7'
+                '-=1.4'
             )
             // Counter numbers running 00 -> 100%
             .to(progressTracker, {
