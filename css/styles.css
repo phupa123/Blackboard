@@ -155,26 +155,33 @@ body {
   box-shadow: 0 2px 10px var(--jump-green-glow);
 }
 
-/* Hero Section */
+/* Hero Section with Custom Background Image */
 .jump-hero {
   position: relative;
-  padding: 70px 24px 50px;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 85px 24px 75px;
+  max-width: 1240px;
+  margin: 20px auto 40px;
   text-align: center;
   overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(142, 214, 0, 0.25);
+  background-image: 
+    linear-gradient(180deg, rgba(13, 17, 23, 0.78) 0%, rgba(13, 17, 23, 0.9) 60%, rgba(13, 17, 23, 0.98) 100%),
+    url('../assets/hero-bg.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 35px rgba(142, 214, 0, 0.15);
 }
 
 .jump-hero::before {
   content: '';
   position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 350px;
-  background: radial-gradient(circle, rgba(142, 214, 0, 0.18) 0%, rgba(0, 210, 255, 0.08) 50%, transparent 70%);
-  filter: blur(80px);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(142, 214, 0, 0.2) 0%, rgba(0, 210, 255, 0.08) 45%, transparent 75%);
   z-index: 0;
   pointer-events: none;
 }
