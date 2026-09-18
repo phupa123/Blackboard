@@ -1,4 +1,4 @@
-// JUMP THAILAND Library Logic
+// BlackBoard - กระดานดำสัมพันธ์ ครั้งที่ 21 Library Logic
 // Supports Realtime Supabase + Full CRUD (Add, Edit, Delete, Toggle Status, Preview)
 
 (function () {
