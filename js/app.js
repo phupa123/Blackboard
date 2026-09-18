@@ -535,6 +535,12 @@
                 duration: 1.2,
                 ease: 'power2.out'
             }, '-=0.6')
+            // Realistic Soft Light Sweep (Fade แสงนุ่มนวลจากซ้ายไปขวาบนผิวภาพตราสัญลักษณ์)
+            .fromTo('.bb-light-sweep', 
+                { xPercent: -100, opacity: 0 }, 
+                { xPercent: 120, opacity: 0.85, duration: 1.4, ease: 'power2.inOut' }, 
+                '-=0.7'
+            )
             // Counter numbers running 00 -> 100%
             .to(progressTracker, {
                 value: 100,
