@@ -535,12 +535,6 @@
                 duration: 1.2,
                 ease: 'power2.out'
             }, '-=0.6')
-            // Shimmer light sweep across the emblem
-            .to('.bb-shimmer-sweep', {
-                x: '300%',
-                duration: 1.1,
-                ease: 'power2.inOut'
-            }, '-=0.5')
             // Counter numbers running 00 -> 100%
             .to(progressTracker, {
                 value: 100,
