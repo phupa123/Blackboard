@@ -149,30 +149,22 @@
         <!-- Official navigation menu -->
         <ul class="jump-nav-menu">
             <li class="jump-nav-item"><a href="#">หน้าแรก</a></li>
+            <li class="jump-nav-item"><a href="#aboutSection">เกี่ยวกับงาน</a></li>
+            <li class="jump-nav-item"><a href="#themesSection">หัวข้อการแข่งขัน</a></li>
+            <li class="jump-nav-item"><a href="#scheduleSection">กำหนดการ</a></li>
             <li class="jump-nav-item"><a href="#librarySection" class="active">คลังงาน (Library)</a></li>
             <li class="jump-nav-item">
-                <a href="admin.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-sky-600 bg-slate-100 hover:bg-sky-50 border border-slate-200 transition-all">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                    หลังบ้าน Admin
-                </a>
-            </li>
-            <li class="jump-nav-item">
-                <button class="nav-cta-btn" id="openAddModalBtn">+ เพิ่มงานใหม่</button>
+                <button class="nav-cta-btn" id="openAddModalBtn">+ ส่งผลงาน / ทรัพยากร</button>
             </li>
         </ul>
 
-        <!-- Mobile Header Quick Add & Admin Button -->
-        <div class="flex items-center gap-2 lg:hidden">
-            <a href="admin.html" class="p-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 flex items-center gap-1" title="เข้าสู่ระบบ Admin">
-                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-            </a>
-            <button class="mobile-header-btn" id="mobileHeaderAddBtn">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-                </svg>
-                + เพิ่มงาน
-            </button>
-        </div>
+        <!-- Mobile Header Quick Add Button -->
+        <button class="mobile-header-btn" id="mobileHeaderAddBtn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+            </svg>
+            + ส่งผลงาน
+        </button>
     </header>
 
     <!-- Hero Section -->
@@ -180,32 +172,208 @@
         <div class="jump-hero-content">
             <div class="jump-badge-tag">
                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                BLACKBOARD 21st EDITION
+                BLACKBOARD 21st EDITION • สัมมนาและแข่งขันวิชาการระดับประเทศ
             </div>
-            <p class="jump-hero-mission">กระดานดำสัมพันธ์ ครั้งที่ 21</p>
+            <p class="jump-hero-mission">โครงการกระดานดำสัมพันธ์ ครั้งที่ ๒๑</p>
             <h1 class="jump-hero-title">
-                BLACKBOARD <span class="highlight">RESOURCE LIBRARY</span>
+                INNOVATION FOR <span class="highlight">FUTURE EDUCATION</span>
             </h1>
             <p class="jump-hero-desc">
-                พื้นที่จัดเก็บ คัดสรร และแลกเปลี่ยนลิงก์ ทรัพยากรงาน และไอเดียสร้างสรรค์ ร่วมกันพัฒนาศักยภาพอย่างต่อเนื่อง
+                เวทีประลองไอเดียนวัตกรรมและการศึกษาดิจิทัลระดับประเทศ รวมพลังความคิดสร้างสรรค์ พัฒนาโซลูชันแห่งอนาคต พร้อมคลังแลกเปลี่ยนทรัพยากรวิชาการร่วมกัน
             </p>
 
             <div class="jump-action-row">
-                <button class="btn-jump-primary" id="heroAddBtn">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    เพิ่มงานใน Library
-                </button>
-                <a href="#librarySection" class="btn-jump-outline">
-                    สำรวจทรัพยากรทั้งหมด
+                <a href="#themesSection" class="btn-jump-primary">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    สำรวจหัวข้อการแข่งขัน
                 </a>
+                <a href="#librarySection" class="btn-jump-outline">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    คลังทรัพยากร (Library)
+                </a>
+            </div>
+
+            <!-- Quick Metrics Cards (สไตล์ Hackathon Highlights) -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto text-left">
+                <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-200/80 shadow-sm">
+                    <span class="text-xs font-bold text-sky-600 uppercase font-mono tracking-wider">EVENT</span>
+                    <h3 class="text-xl font-black text-slate-800 mt-1">ครั้งที่ 21</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">เวทีระดับประเทศ</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-200/80 shadow-sm">
+                    <span class="text-xs font-bold text-emerald-600 uppercase font-mono tracking-wider">TRACKS</span>
+                    <h3 class="text-xl font-black text-slate-800 mt-1">4 หมวดหลัก</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">นวัตกรรม & เทคโนโลยี</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-200/80 shadow-sm">
+                    <span class="text-xs font-bold text-cyan-600 uppercase font-mono tracking-wider">NETWORK</span>
+                    <h3 class="text-xl font-black text-slate-800 mt-1">สถาบันอุดมศึกษา</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">ทั่วทุกภูมิภาค</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-200/80 shadow-sm">
+                    <span class="text-xs font-bold text-indigo-600 uppercase font-mono tracking-wider">RESOURCE</span>
+                    <h3 class="text-xl font-black text-slate-800 mt-1">Open Archive</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">คลังงาน Real-time</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content Area -->
-    <main class="jump-main-container" id="librarySection">
+    <!-- Section 1: เกี่ยวกับงาน (About the Event) -->
+    <section id="aboutSection" class="max-w-6xl mx-auto px-6 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div class="lg:col-span-7 space-y-5">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-sky-100/80 text-sky-800 border border-sky-200 font-mono">
+                    ABOUT THE 21st EDITION
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight">
+                    พื้นที่ปลดปล่อยศักยภาพ <br><span class="text-sky-600">เชื่อมโยงปัญญาและเทคโนโลยี</span>
+                </h2>
+                <p class="text-slate-600 leading-relaxed text-base">
+                    <strong>กระดานดำสัมพันธ์ ครั้งที่ ๒๑</strong> เป็นโครงการสัมมนาและแข่งขันวิชาการระดับประเทศ ที่มุ่งเน้นการสร้างสรรค์นวัตกรรมด้านเทคโนโลยีสารสนเทศ การศึกษา และการพัฒนาที่ยั่งยืน เพื่อเปิดโอกาสให้นิสิตนักศึกษาได้นำองค์ความรู้มาต่อยอดสู่การปฏิบัติจริง ร่วมระดมสมอง (Ideation) และสร้างความร่วมมืออันเข้มแข็งระหว่างมหาวิทยาลัย
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div class="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-sm">
+                        <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 font-bold">✓</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">สหวิทยาการ & ปัญญาประดิษฐ์</h4>
+                            <p class="text-xs text-slate-500 mt-0.5">ผสานศาสตร์ IT, AI และการศึกษาเพื่อแก้ปัญหาจริง</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-sm">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 font-bold">✓</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">คลังแบ่งปันองค์ความรู้</h4>
+                            <p class="text-xs text-slate-500 mt-0.5">แบ่งปันลิงก์ผลงาน ไอเดีย และสไลด์นำเสนอผ่าน Library</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-5 relative">
+                <div class="relative mx-auto w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gradient-to-b from-sky-950 to-slate-900 p-8 text-center text-white">
+                    <img src="assets/poster-intro.jpg" alt="ตราสัญลักษณ์" class="w-44 h-44 mx-auto object-contain filter drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] mb-6">
+                    <h3 class="text-xl font-black font-prompt">กระดานดำสัมพันธ์ ครั้งที่ ๒๑</h3>
+                    <p class="text-xs text-sky-300 font-mono tracking-widest mt-1">NATIONAL SCHOLARLY FORUM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: หัวข้อการแข่งขัน (Themes & Tracks) -->
+    <section id="themesSection" class="max-w-6xl mx-auto px-6 py-16 border-t border-slate-200/80">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 font-mono mb-3">
+                COMPETITION TRACKS
+            </div>
+            <h2 class="text-3xl font-black text-slate-900">หัวข้อหลักในการพัฒนา & นำเสนอ</h2>
+            <p class="text-slate-500 text-sm mt-2">ตอบโจทย์ความท้าทายยุคดิจิทัลด้วยแนวคิดที่ยั่งยืนและต่อยอดได้จริง</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Track 1 -->
+            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl mb-4 font-bold">
+                    🤖
+                </div>
+                <h3 class="font-extrabold text-base text-slate-900 mb-1">AI & Smart Learning</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    ประยุกต์ใช้ปัญญาประดิษฐ์และ Machine Learning เพื่อส่งเสริมการเรียนรู้เฉพาะบุคคล และเพิ่มประสิทธิภาพการสอน
+                </p>
+            </div>
+
+            <!-- Track 2 -->
+            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mb-4 font-bold">
+                    🌱
+                </div>
+                <h3 class="font-extrabold text-base text-slate-900 mb-1">Digital Sustainability</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    นวัตกรรมดิจิทัลเพื่อสิ่งแวดล้อม สังคมคาร์บอนต่ำ และการบริหารจัดการทรัพยากรอย่างยั่งยืน
+                </p>
+            </div>
+
+            <!-- Track 3 -->
+            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl mb-4 font-bold">
+                    🎨
+                </div>
+                <h3 class="font-extrabold text-base text-slate-900 mb-1">Creative UX & EdTech</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    การออกแบบสื่ออินเตอร์แอคทีฟ แพลตฟอร์มการศึกษา และ UX/UI ที่เข้าถึงง่ายสำหรับผู้เรียนทุกคน
+                </p>
+            </div>
+
+            <!-- Track 4 -->
+            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-4 font-bold">
+                    💡
+                </div>
+                <h3 class="font-extrabold text-base text-slate-900 mb-1">Open Innovation</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    ผลงานนวัตกรรมอิสระ ซอฟต์แวร์ต้นแบบ และการบูรณาการเทคโนโลยีเพื่อยกระดับสังคมและชุมชน
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: กำหนดการ (Timeline / Schedule) -->
+    <section id="scheduleSection" class="max-w-4xl mx-auto px-6 py-16 border-t border-slate-200/80">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-cyan-100 text-cyan-800 border border-cyan-200 font-mono mb-3">
+                TIMELINE & AGENDA
+            </div>
+            <h2 class="text-3xl font-black text-slate-900">กำหนดการกิจกรรม</h2>
+            <p class="text-slate-500 text-sm mt-2">ไทม์ไลน์สำคัญของโครงการสัมมนาและแข่งขันวิชาการ</p>
+        </div>
+
+        <div class="space-y-4">
+            <div class="flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm">
+                <div class="w-16 h-16 rounded-xl bg-sky-50 text-sky-700 flex flex-col items-center justify-center shrink-0 border border-sky-100 font-mono">
+                    <span class="text-xs font-bold">STEP</span>
+                    <span class="text-lg font-black leading-none mt-0.5">01</span>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2">
+                        <h4 class="font-bold text-slate-900 text-base">เปิดรับสมัคร & ส่งข้อเสนอโครงการ (Proposal Submission)</h4>
+                        <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">เปิดรับแล้ว</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">ส่งหัวข้อผลงาน แนวคิด และสมาชิกทีมผ่านระบบกลาง</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm">
+                <div class="w-16 h-16 rounded-xl bg-slate-50 text-slate-600 flex flex-col items-center justify-center shrink-0 border border-slate-200 font-mono">
+                    <span class="text-xs font-bold">STEP</span>
+                    <span class="text-lg font-black leading-none mt-0.5">02</span>
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-bold text-slate-900 text-base">การอบรมเชิงปฏิบัติการ (Workshop & Mentoring)</h4>
+                    <p class="text-xs text-slate-500 mt-1">รับฟังคำแนะนำจากคณาจารย์และผู้เชี่ยวชาญเพื่อขัดเกลาผลงาน</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm">
+                <div class="w-16 h-16 rounded-xl bg-slate-50 text-slate-600 flex flex-col items-center justify-center shrink-0 border border-slate-200 font-mono">
+                    <span class="text-xs font-bold">STEP</span>
+                    <span class="text-lg font-black leading-none mt-0.5">03</span>
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-bold text-slate-900 text-base">วันแข่งขันรอบตัดสิน & พิธีมอบรางวัล (Final Pitching Day)</h4>
+                    <p class="text-xs text-slate-500 mt-1">นำเสนอผลงานจริงต่อหน้าคณะกรรมการผู้ทรงคุณวุฒิระดับประเทศ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area: The Beloved Library Section -->
+    <main class="jump-main-container border-t border-slate-200/80 pt-16" id="librarySection">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200 font-mono mb-3">
+                OPEN RESOURCE REPOSITORY
+            </div>
+            <h2 class="text-3xl font-black text-slate-900">คลังทรัพยากรและผลงาน (Library)</h2>
+            <p class="text-slate-500 text-sm mt-2">พื้นที่รวบรวม คัดสรร และจัดเก็บลิงก์ไอเดีย นวัตกรรม และแหล่งเรียนรู้ร่วมกันแบบ Real-time</p>
+        </div>
         <!-- Controls Toolbar (Filters & Search) -->
         <div class="jump-controls-panel">
             <div class="jump-filters">
