@@ -606,7 +606,14 @@
                 stagger: 0.08,
                 ease: 'power2.out'
             }, '-=0.4');
+
+            // Fail-safe: ensure curtain is removed in case of any animation hang
+            setTimeout(() => {
+                const c = document.getElementById('bb-intro-curtain');
+                if (c) c.remove();
+            }, 6000);
         } else {
+            if (curtain) curtain.remove();
             gsap.from('.jump-header', { y: -50, opacity: 0, duration: 0.8, ease: 'power3.out' });
             gsap.from('.jump-hero-content > *', { y: 30, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out', delay: 0.2 });
         }
