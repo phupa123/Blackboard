@@ -8,6 +8,7 @@
     let allItems = [];
     let allAdmins = [];
     let searchQuery = '';
+    let isRealtimeSubscribed = false;
 
     // DOM Elements
     const authHeaderArea = document.getElementById('authHeaderArea');
@@ -522,6 +523,9 @@
 
     // Realtime listener
     function subscribeRealtime() {
+        if (isRealtimeSubscribed) return;
+        isRealtimeSubscribed = true;
+
         supabase
             .channel('admin-sync')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'items' }, () => {
