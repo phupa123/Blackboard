@@ -175,11 +175,12 @@
     // --- 3. Google OAuth Login & Logout ---
     googleLoginBtn.addEventListener('click', async () => {
         try {
-            const redirectUrl = window.location.origin + window.location.pathname;
+            // Determine exact current URL (e.g. https://blackboard.edspace.workers.dev/admin.html)
+            const currentUrl = window.location.href.split('#')[0].split('?')[0];
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: redirectUrl
+                    redirectTo: currentUrl
                 }
             });
             if (error) throw error;
