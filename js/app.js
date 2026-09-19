@@ -516,19 +516,20 @@
                 isSkipped = true;
                 tl.kill();
 
-                gsap.timeline()
-                    .to('.bb-intro-core', { opacity: 0, duration: 0.25, ease: 'power2.in' })
-                    .to('.bb-curtain-left', { xPercent: -100, duration: 0.6, ease: 'power4.inOut' })
-                    .to('.bb-curtain-right', {
-                        xPercent: 100,
-                        duration: 0.6,
-                        ease: 'power4.inOut',
-                        onComplete: () => {
-                            if (curtain && curtain.parentNode) curtain.remove();
-                        }
-                    }, '<')
-                    .from('.jump-header', { y: -40, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
-                    .from('.jump-hero-content > *', { y: 25, opacity: 0, duration: 0.5, stagger: 0.08, ease: 'power3.out' }, '-=0.3');
+                gsap.to(curtain, {
+                    opacity: 0,
+                    duration: 0.35,
+                    ease: 'power2.out',
+                    onComplete: () => {
+                        if (curtain && curtain.parentNode) curtain.remove();
+                        gsap.set(['.jump-header', '.jump-hero', '.jump-hero-content', '.jump-hero-content > *'], {
+                            clearProps: 'all'
+                        });
+                    }
+                });
+
+                gsap.fromTo('.jump-header', { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' });
+                gsap.fromTo('.jump-hero-content > *', { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'power2.out' });
             }
 
             if (skipBtn) {
