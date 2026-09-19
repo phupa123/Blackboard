@@ -148,23 +148,23 @@
 
         <!-- Official navigation menu -->
         <ul class="jump-nav-menu">
-            <li class="jump-nav-item"><a href="#">หน้าแรก</a></li>
+            <li class="jump-nav-item"><a href="#" class="active">หน้าแรก</a></li>
             <li class="jump-nav-item"><a href="#aboutSection">เกี่ยวกับงาน</a></li>
             <li class="jump-nav-item"><a href="#themesSection">หัวข้อการแข่งขัน</a></li>
             <li class="jump-nav-item"><a href="#scheduleSection">กำหนดการ</a></li>
-            <li class="jump-nav-item"><a href="#librarySection" class="active">คลังงาน (Library)</a></li>
+            <li class="jump-nav-item"><a href="library.html">คลังงาน (Library)</a></li>
             <li class="jump-nav-item">
-                <button class="nav-cta-btn" id="openAddModalBtn">+ ส่งผลงาน / ทรัพยากร</button>
+                <a href="library.html" class="nav-cta-btn">เข้าสู่คลังงาน (Library) →</a>
             </li>
         </ul>
 
-        <!-- Mobile Header Quick Add Button -->
-        <button class="mobile-header-btn" id="mobileHeaderAddBtn">
+        <!-- Mobile Header Quick Library Button -->
+        <a href="library.html" class="mobile-header-btn">
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
             </svg>
-            + ส่งผลงาน
-        </button>
+            คลังงาน
+        </a>
     </header>
 
     <!-- Hero Section -->
@@ -365,47 +365,28 @@
         </div>
     </section>
 
-    <!-- Main Content Area: The Beloved Library Section -->
-    <main class="jump-main-container border-t border-slate-200/80 pt-16" id="librarySection">
-        <div class="text-center max-w-2xl mx-auto mb-10">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200 font-mono mb-3">
-                OPEN RESOURCE REPOSITORY
+    <!-- Section: Invitation to Library (Call To Action to library.html) -->
+    <section class="max-w-5xl mx-auto px-6 py-20 text-center border-t border-slate-200/80">
+        <div class="p-10 sm:p-14 rounded-3xl bg-gradient-to-br from-sky-500 via-sky-600 to-cyan-600 text-white shadow-2xl relative overflow-hidden">
+            <div class="relative z-10 max-w-2xl mx-auto space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-white/20 text-white border border-white/30 backdrop-blur-md">
+                    OPEN RESOURCE REPOSITORY
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black">พร้อมสำรวจคลังผลงานและทรัพยากร?</h2>
+                <p class="text-sky-100 text-sm sm:text-base leading-relaxed">
+                    เข้าสู่ระบบ Library เพื่อค้นหาไอเดีย ตรวจสอบลิงก์ผลงาน และร่วมแลกเปลี่ยนแหล่งเรียนรู้ของโครงการกระดานดำสัมพันธ์ ครั้งที่ ๒๑
+                </p>
+                <div class="pt-4 flex flex-wrap items-center justify-center gap-4">
+                    <a href="library.html" class="px-8 py-3.5 rounded-full bg-white text-sky-700 font-bold text-base shadow-lg hover:shadow-xl hover:bg-slate-50 transition-all">
+                        เข้าสู่หน้าคลังงาน (Library) →
+                    </a>
+                </div>
             </div>
-            <h2 class="text-3xl font-black text-slate-900">คลังทรัพยากรและผลงาน (Library)</h2>
-            <p class="text-slate-500 text-sm mt-2">พื้นที่รวบรวม คัดสรร และจัดเก็บลิงก์ไอเดีย นวัตกรรม และแหล่งเรียนรู้ร่วมกันแบบ Real-time</p>
+            <!-- Background Glow Elements -->
+            <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-cyan-300/20 blur-3xl pointer-events-none"></div>
         </div>
-        <!-- Controls Toolbar (Filters & Search) -->
-        <div class="jump-controls-panel">
-            <div class="jump-filters">
-                <button class="filter-pill active" data-filter="all">
-                    ทั้งหมด
-                    <span class="filter-counter" id="countAll">0</span>
-                </button>
-                <button class="filter-pill" data-filter="use">
-                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
-                    ใช้ (Active)
-                    <span class="filter-counter" id="countUse">0</span>
-                </button>
-                <button class="filter-pill" data-filter="not_use">
-                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #f43f5e; display: inline-block;"></span>
-                    ไม่ใช้ (Archived)
-                    <span class="filter-counter" id="countNotUse">0</span>
-                </button>
-            </div>
-
-            <div class="jump-search-wrapper">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-                <input type="text" id="searchInput" class="jump-search-input" placeholder="ค้นหาชื่อหัวข้อ, ลิงก์, หรือหมวดหมู่...">
-            </div>
-        </div>
-
-        <!-- Cards Grid -->
-        <div class="jump-grid" id="libraryGrid">
-            <!-- Cards rendered by js/app.js -->
-        </div>
-    </main>
+    </section>
 
     <!-- Footer Section -->
     <footer class="jump-footer">
@@ -419,10 +400,11 @@
             </div>
 
             <div class="jump-footer-links">
-                <a href="#">หน้าแรก</a>
-                <a href="#librarySection">คลังงาน</a>
-                <a href="#">เงื่อนไขการใช้งาน</a>
-                <a href="#">นโยบายความเป็นส่วนตัว</a>
+                <a href="index.html">หน้าแรก</a>
+                <a href="#aboutSection">เกี่ยวกับงาน</a>
+                <a href="#themesSection">หัวข้อการแข่งขัน</a>
+                <a href="#scheduleSection">กำหนดการ</a>
+                <a href="library.html">คลังงาน (Library)</a>
             </div>
 
             <p class="jump-footer-copy">
@@ -431,129 +413,15 @@
         </div>
     </footer>
 
-    <!-- Floating Action Button (FAB) for Mobile -->
-    <button class="mobile-fab" id="mobileFabBtn" aria-label="เพิ่มงานใหม่" title="เพิ่มงานใน Library">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-        </svg>
-    </button>
-
-    <!-- Modal: เพิ่ม / แก้ไขงาน (Add & Edit Modal) -->
-    <div class="jump-modal-overlay" id="itemModal" style="display: none;">
-        <div class="jump-modal">
-            <div class="jump-modal-header">
-                <h3 id="modalTitle">เพิ่มงาน / ทรัพยากรใหม่</h3>
-                <button class="jump-close-btn" id="closeItemModalBtn">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-
-            <form id="itemForm">
-                <input type="hidden" id="itemIdInput" value="">
-
-                <div class="jump-modal-body">
-                    <!-- Title -->
-                    <div class="jump-form-group">
-                        <label class="jump-label" for="itemTitle">
-                            ชื่อหัวข้อ 
-                            <small>(เพื่อให้ดูง่ายและค้นหาสะดวก)</small>
-                        </label>
-                        <input type="text" id="itemTitle" class="jump-input" placeholder="เช่น AIS Technology Guide, AI for Education" required>
-                    </div>
-
-                    <!-- URL -->
-                    <div class="jump-form-group">
-                        <label class="jump-label" for="itemUrl">
-                            Link เว็บไซต์ / ทรัพยากร 
-                            <small>(URL)</small>
-                        </label>
-                        <input type="text" id="itemUrl" class="jump-input" placeholder="https://example.com" required>
-                    </div>
-
-                    <!-- Live URL Preview -->
-                    <div id="livePreviewContainer" style="display: none; background: #f8fafc; border: 1px solid rgba(2, 132, 199, 0.25); border-radius: 12px; padding: 14px; align-items: center; gap: 14px;">
-                        <div style="width: 52px; height: 52px; border-radius: 10px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
-                            <img id="previewFavicon" src="" alt="Favicon" style="width: 32px; height: 32px;">
-                        </div>
-                        <div style="overflow: hidden;">
-                            <h4 id="previewTitleText" style="font-size: 0.94rem; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">หัวข้อ</h4>
-                            <p id="previewDomain" style="font-size: 0.82rem; color: #0284c7; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">domain.com</p>
-                        </div>
-                    </div>
-
-                    <!-- Category -->
-                    <div class="jump-form-group">
-                        <label class="jump-label" for="itemCategory">หมวดหมู่นวัตกรรม</label>
-                        <select id="itemCategory" class="jump-select">
-                            <option value="AI & Tech">ปัญญาประดิษฐ์ & เทคโนโลยี (AI & Tech)</option>
-                            <option value="Education">นวัตกรรมการศึกษา (Education)</option>
-                            <option value="Design & UX">ออกแบบ & UX/UI (Design & UX)</option>
-                            <option value="Development">การพัฒนาโปรแกรม (Development)</option>
-                            <option value="Research">งานวิจัย & เอกสารอ้างอิง (Research)</option>
-                            <option value="General">ทั่วไป (General)</option>
-                        </select>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="jump-form-group">
-                        <label class="jump-label" for="itemDesc">คำอธิบายเพิ่มเติม</label>
-                        <textarea id="itemDesc" class="jump-textarea" rows="3" placeholder="ระบุเหตุผลหรือรายละเอียดเพิ่มเติม"></textarea>
-                    </div>
-                </div>
-
-                <div class="jump-modal-footer">
-                    <button type="button" class="btn-jump-outline" id="cancelItemBtn" style="padding: 10px 22px; font-size: 0.92rem;">ยกเลิก</button>
-                    <button type="submit" class="btn-jump-primary" style="padding: 10px 26px; font-size: 0.95rem;">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        บันทึกเข้า Library
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: ดูตัวอย่างหน้าเว็บ (Preview Modal) -->
-    <div class="jump-modal-overlay" id="previewModal" style="display: none;">
-        <div class="jump-modal" style="max-width: 1060px; width: 92vw; height: 86vh; display: flex; flex-direction: column;">
-            <div class="jump-modal-header">
-                <h3 id="previewModalTitle" style="font-size: 1.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%;">
-                    หน้า Preview
-                </h3>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <a id="externalLinkBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-jump-outline" style="padding: 7px 18px; font-size: 0.85rem;">
-                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                        เปิดในแท็บใหม่
-                    </a>
-                    <button class="jump-close-btn" id="closePreviewModalBtn">
-                        <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div style="flex: 1; position: relative; background: #fff;">
-                <iframe id="previewIframe" style="width: 100%; height: 100%; border: none;" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
-                <div id="iframeFallback" style="display: none; position: absolute; inset: 0; background: #f8fafc; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center;">
-                    <svg width="52" height="52" fill="none" stroke="#0284c7" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                    </svg>
-                    <h3 style="color: #0f172a; font-size: 1.25rem; font-weight: 800;">เว็บไซต์นี้มีระบบความปลอดภัยป้องกันการฝัง Preview (X-Frame-Options)</h3>
-                    <p style="color: #475569; max-width: 460px;">คุณสามารถคลิกปุ่มด้านล่างเพื่อเปิดหน้าเว็บจริงได้โดยตรง</p>
-                    <a id="fallbackLink" href="#" target="_blank" rel="noopener noreferrer" class="btn-jump-primary">
-                        เปิดหน้าเว็บจริงในแท็บใหม่
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="js/config.js"></script>
-    <script src="js/app.js"></script>
+    <!-- GSAP Initialization Script for index.html only -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.gsap) {
+                // Header & Hero animation
+                gsap.from('.jump-header', { y: -40, opacity: 0, duration: 0.7, ease: 'power3.out' });
+                gsap.from('.jump-hero-content > *', { y: 30, opacity: 0, duration: 0.7, stagger: 0.1, ease: 'power3.out', delay: 0.2 });
+            }
+        });
+    </script>
 </body>
 </html>
