@@ -74,14 +74,20 @@
 
         <!-- Main Content Core -->
         <div class="bb-intro-core relative z-20 h-full w-full flex flex-col justify-between items-center py-10 px-6 max-w-5xl mx-auto">
-            <!-- Top Bar: Subtle Editorial Metadata -->
+            <!-- Top Bar: Subtle Editorial Metadata & Skip Action -->
             <div class="w-full flex justify-between items-center text-xs tracking-[0.25em] text-slate-400 font-mono border-b border-white/[0.06] pb-4">
                 <span class="flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span>EDITION XXI</span>
                 </span>
                 <span class="hidden sm:inline-block tracking-[0.3em] text-slate-300">กระดานดำสัมพันธ์ ครั้งที่ 21</span>
-                <span>VOL. 21 / 2026</span>
+                <button type="button" id="bb-skip-intro-btn" class="bb-skip-intro-btn" title="ข้าม Intro เพื่อเข้าสู่หน้าเว็บทันที">
+                    <span>ข้าม INTRO</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                    </svg>
+                </button>
             </div>
 
             <!-- Center Stage: The Sacred Metallic Emblem -->
@@ -376,5 +382,6 @@
     <!-- Scripts -->
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/transition.js"></script>
 </body>
 </html>

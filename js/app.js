@@ -503,12 +503,40 @@
         const curtain = document.getElementById('bb-intro-curtain');
         const counterEl = document.getElementById('bb-intro-counter');
         const statusText = document.getElementById('bb-intro-status-text');
+        const skipBtn = document.getElementById('bb-skip-intro-btn');
 
         if (curtain && counterEl) {
             const tl = gsap.timeline();
-
-            // Progress object for counter interpolation
             const progressTracker = { value: 0 };
+            let isSkipped = false;
+
+            // Dismiss handler
+            function dismissIntro() {
+                if (isSkipped) return;
+                isSkipped = true;
+                tl.kill();
+
+                gsap.timeline()
+                    .to('.bb-intro-core', { opacity: 0, duration: 0.25, ease: 'power2.in' })
+                    .to('.bb-curtain-left', { xPercent: -100, duration: 0.6, ease: 'power4.inOut' })
+                    .to('.bb-curtain-right', {
+                        xPercent: 100,
+                        duration: 0.6,
+                        ease: 'power4.inOut',
+                        onComplete: () => {
+                            if (curtain && curtain.parentNode) curtain.remove();
+                        }
+                    }, '<')
+                    .from('.jump-header', { y: -40, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
+                    .from('.jump-hero-content > *', { y: 25, opacity: 0, duration: 0.5, stagger: 0.08, ease: 'power3.out' }, '-=0.3');
+            }
+
+            if (skipBtn) {
+                skipBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dismissIntro();
+                });
+            }
 
             // Status message updates at key percentages
             const statusMessages = [
@@ -553,6 +581,7 @@
                 duration: 1.8,
                 ease: 'power2.inOut',
                 onUpdate: () => {
+                    if (isSkipped) return;
                     const currentVal = Math.floor(progressTracker.value);
                     counterEl.textContent = currentVal < 10 ? `0${currentVal}` : `${currentVal}`;
                     
@@ -582,7 +611,7 @@
                 duration: 1.1,
                 ease: 'power4.inOut',
                 onComplete: () => {
-                    curtain.remove();
+                    if (curtain && curtain.parentNode) curtain.remove();
                 }
             }, '<')
             // 4. Main Site Emerges
