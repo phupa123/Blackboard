@@ -43,6 +43,7 @@
                 }
 
                 e.preventDefault();
+                sessionStorage.setItem('bb_nav_transition', '1');
                 transitionCurtain.classList.add('is-active');
 
                 // Navigate after smooth fade transition duration (300ms)
