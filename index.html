@@ -209,7 +209,7 @@
 
     <!-- Section 1: เกี่ยวกับงาน (About the Event) -->
     <section id="aboutSection" class="max-w-6xl mx-auto px-6 py-16">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="idx-grid-about grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div class="lg:col-span-7 space-y-5">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-sky-100/80 text-sky-800 border border-sky-200 font-mono">
                     ABOUT THE 21st EDITION
@@ -257,9 +257,9 @@
             <p class="text-slate-500 text-sm mt-2">ตอบโจทย์ความท้าทายยุคดิจิทัลด้วยแนวคิดที่ยั่งยืนและต่อยอดได้จริง</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="idx-grid-tracks grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Track 1 -->
-            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+            <div class="idx-track-card p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl mb-4 font-bold">
                     🤖
                 </div>
@@ -270,7 +270,7 @@
             </div>
 
             <!-- Track 2 -->
-            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+            <div class="idx-track-card p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mb-4 font-bold">
                     🌱
                 </div>
@@ -281,7 +281,7 @@
             </div>
 
             <!-- Track 3 -->
-            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+            <div class="idx-track-card p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl mb-4 font-bold">
                     🎨
                 </div>
@@ -292,7 +292,7 @@
             </div>
 
             <!-- Track 4 -->
-            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+            <div class="idx-track-card p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-4 font-bold">
                     💡
                 </div>
@@ -444,16 +444,16 @@
                         ease: 'power2.out',
                         onComplete: () => {
                             if (curtain && curtain.parentNode) curtain.remove();
-                            // Ensure all hero and header elements are 100% visible
-                            gsap.set(['.jump-header', '.jump-hero', '.jump-hero-content', '.jump-hero-content > *'], {
+                            // Ensure all hero, header, and section elements are 100% visible
+                            gsap.set(['.jump-header', '.jump-hero', '.jump-hero-content', '.jump-hero-content > *', '#aboutSection', '#themesSection', '#scheduleSection'], {
                                 clearProps: 'all'
                             });
                         }
                     });
 
                     // Quick entrance for header and hero
-                    gsap.fromTo('.jump-header', { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' });
-                    gsap.fromTo('.jump-hero-content > *', { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'power2.out' });
+                    gsap.fromTo('.jump-header', { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out', immediateRender: false });
+                    gsap.fromTo('.jump-hero-content > *', { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'power2.out', immediateRender: false });
                 }
 
                 // Skip button event listener
@@ -521,37 +521,45 @@
                     onComplete: () => {
                         sessionStorage.setItem('bb_intro_seen', '1');
                         if (curtain && curtain.parentNode) curtain.remove();
-                        gsap.set(['.jump-header', '.jump-hero', '.jump-hero-content', '.jump-hero-content > *'], {
+                        gsap.set(['.jump-header', '.jump-hero', '.jump-hero-content', '.jump-hero-content > *', '#aboutSection', '#themesSection', '#scheduleSection'], {
                             clearProps: 'all'
                         });
                     }
                 }, '<')
-                .from('.jump-header', {
-                    y: -40,
-                    opacity: 0,
-                    duration: 0.7,
-                    ease: 'power3.out'
-                }, '-=0.6')
-                .from('.jump-hero-content > *', {
-                    y: 30,
-                    opacity: 0,
-                    duration: 0.7,
-                    stagger: 0.1,
-                    ease: 'power3.out',
-                    onComplete: () => {
-                        gsap.set(['.jump-header', '.jump-hero', '.jump-hero-content', '.jump-hero-content > *'], {
+                .fromTo('.jump-header', 
+                    { y: -30, opacity: 0 }, 
+                    { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', immediateRender: false }, 
+                    '-=0.6'
+                )
+                .fromTo('.jump-hero-content > *', 
+                    { y: 25, opacity: 0 }, 
+                    { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out', immediateRender: false, 
+                      onComplete: () => {
+                          gsap.set(['.jump-header', '.jump-hero', '.jump-hero-content', '.jump-hero-content > *'], {
+                              clearProps: 'all'
+                          });
+                      }
+                    }, 
+                    '-=0.4'
+                );
+
+                // Fail-safe: ensure curtain is removed in case of any unexpected hang and clear props
+                setTimeout(() => {
+                    const c = document.getElementById('bb-intro-curtain');
+                    if (c && c.parentNode) c.remove();
+                    if (window.gsap) {
+                        gsap.set(['.jump-header', '.jump-hero', '.jump-hero-content', '.jump-hero-content > *', '#aboutSection', '#themesSection', '#scheduleSection'], {
                             clearProps: 'all'
                         });
                     }
-                }, '-=0.4');
-
-                // Fail-safe: ensure curtain is removed in case of any unexpected hang
-                setTimeout(() => {
-                    const c = document.getElementById('bb-intro-curtain');
-                    if (c) c.remove();
-                }, 6000);
+                }, 5000);
             } else {
                 if (curtain) curtain.remove();
+                if (window.gsap) {
+                    gsap.set(['.jump-header', '.jump-hero', '.jump-hero-content', '.jump-hero-content > *', '#aboutSection', '#themesSection', '#scheduleSection'], {
+                        clearProps: 'all'
+                    });
+                }
             }
         });
     </script>
