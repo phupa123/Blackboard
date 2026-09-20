@@ -107,6 +107,19 @@ body {
   animation-delay: -8s;
 }
 
+@media (max-width: 768px) {
+  .cloud-bubble-1 {
+    width: 260px;
+    height: 260px;
+    filter: blur(45px);
+  }
+  .cloud-bubble-2 {
+    width: 220px;
+    height: 220px;
+    filter: blur(45px);
+  }
+}
+
 @keyframes cloudFloat {
   0% { transform: translate(0, 0) scale(1); }
   100% { transform: translate(40px, 30px) scale(1.08); }
@@ -959,77 +972,255 @@ body {
   line-height: 1.6;
 }
 
-/* Responsive Mobile Optimizations */
+/* Comprehensive Mobile UI & Tablet Optimizations */
 @media (max-width: 768px) {
+  /* Header & Navigation on Mobile */
   .jump-header {
-    padding: 12px 18px;
+    padding: 10px 16px;
+    gap: 12px;
   }
 
+  .jump-logo-area {
+    gap: 10px;
+  }
+
+  .jump-logo-badge {
+    padding: 5px 10px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+  }
+
+  .jump-logo-text .main-title {
+    font-size: 1.05rem;
+  }
+
+  .jump-logo-text .sub-title {
+    font-size: 0.65rem;
+    letter-spacing: 0;
+  }
+
+  /* Compact Pill-style Nav Menu for Mobile so users can navigate seamlessly */
   .jump-nav-menu {
+    display: flex;
+    gap: 8px;
+  }
+
+  .jump-nav-item a {
+    font-size: 0.82rem;
+    padding: 6px 10px;
+    background: rgba(241, 245, 249, 0.8);
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  .jump-nav-item a.active {
+    background: rgba(2, 132, 199, 0.12);
+    color: var(--brand-primary);
+    border-color: rgba(2, 132, 199, 0.3);
+  }
+
+  .jump-nav-item a.active::after {
     display: none;
+  }
+
+  .nav-cta-btn {
+    display: none; /* Accessible via mobile header button and FAB */
   }
 
   .mobile-header-btn {
     display: inline-flex;
+    padding: 6px 12px;
+    font-size: 0.78rem;
   }
 
   .mobile-fab {
     display: flex;
+    bottom: 20px;
+    right: 20px;
+    width: 54px;
+    height: 54px;
+    box-shadow: 0 8px 25px rgba(2, 132, 199, 0.45);
   }
 
+  /* Intro Screen Mobile Fit */
+  .bb-intro-core {
+    padding: 16px 12px;
+  }
+
+  .bb-emblem-stage {
+    width: 140px !important;
+    height: 140px !important;
+    margin-bottom: 16px;
+  }
+
+  .bb-edition-title {
+    font-size: 1.65rem !important;
+  }
+
+  .bb-edition-sub {
+    font-size: 0.7rem !important;
+    letter-spacing: 0.2em !important;
+  }
+
+  .bb-skip-intro-btn {
+    padding: 6px 14px;
+    font-size: 0.75rem;
+  }
+
+  /* Hero Section Mobile */
   .jump-hero {
-    padding: 50px 18px 42px;
-    margin: 14px 12px 28px;
+    padding: 38px 16px 32px;
+    margin: 12px 10px 24px;
+    border-radius: 20px;
+  }
+
+  .jump-badge-tag {
+    font-size: 0.72rem;
+    padding: 5px 12px;
+    margin-bottom: 14px;
+    line-height: 1.3;
+    letter-spacing: 0.2px;
+    word-break: break-word;
   }
 
   .jump-hero-title {
-    font-size: 2.1rem;
+    font-size: 1.75rem;
     letter-spacing: -0.5px;
+    line-height: 1.22;
+    margin-bottom: 12px;
   }
 
   .jump-hero-mission {
-    font-size: 1.1rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
   }
 
   .jump-hero-desc {
-    font-size: 1rem;
-    margin-bottom: 28px;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin-bottom: 24px;
   }
 
   .jump-action-row {
     flex-direction: column;
     width: 100%;
-    gap: 12px;
+    gap: 10px;
   }
 
   .btn-jump-primary, .btn-jump-outline {
     width: 100%;
+    padding: 12px 20px;
+    font-size: 0.92rem;
+    min-height: 46px;
   }
 
+  /* Quick Metrics Cards in Hero */
+  .hero-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    margin-top: 24px !important;
+  }
+
+  .metric-card-box {
+    padding: 10px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .metric-card-box .metric-value {
+    font-size: 1.05rem !important;
+  }
+
+  .metric-card-box .metric-tag {
+    font-size: 0.65rem !important;
+  }
+
+  .metric-card-box .metric-sub {
+    font-size: 0.7rem !important;
+  }
+
+  /* Sections Mobile Spacing */
+  #aboutSection, #themesSection, #scheduleSection {
+    padding-top: 2rem !important;
+    padding-bottom: 2.5rem !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .idx-grid-about {
+    gap: 1.5rem;
+  }
+
+  .idx-grid-tracks {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .idx-track-card {
+    padding: 1.15rem !important;
+  }
+
+  /* Library Container & Controls */
   .jump-main-container {
-    padding: 10px 16px 80px;
+    padding: 8px 12px 90px;
   }
 
   .jump-controls-panel {
-    padding: 14px;
-    gap: 14px;
+    padding: 12px;
+    gap: 10px;
     flex-direction: column;
     align-items: stretch;
+    border-radius: 18px;
+    margin-bottom: 24px;
   }
 
   .jump-filters {
     width: 100%;
+    overflow-x: auto;
+    padding: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-pill {
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    min-height: 36px;
   }
 
   .jump-search-wrapper {
     max-width: 100%;
   }
 
-  .jump-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+  .jump-search-input {
+    padding: 10px 14px 10px 40px;
+    font-size: 0.9rem;
   }
 
+  /* Cards Grid & Cards */
+  .jump-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .jump-card {
+    border-radius: 18px;
+  }
+
+  .jump-card-banner {
+    height: 130px;
+  }
+
+  .jump-card-body {
+    padding: 16px;
+  }
+
+  .jump-card-title {
+    font-size: 1.05rem;
+  }
+
+  /* Modal Bottom Sheet */
   .jump-modal-overlay {
     padding: 0;
     align-items: flex-end;
@@ -1037,7 +1228,29 @@ body {
 
   .jump-modal {
     border-radius: 24px 24px 0 0;
-    max-height: 94vh;
+    max-height: 92vh;
+    width: 100%;
+  }
+
+  .jump-modal-header {
+    padding: 18px 20px;
+  }
+
+  .jump-modal-body {
+    padding: 18px 20px;
+  }
+
+  .jump-modal-footer {
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Footer on Mobile */
+  .jump-footer {
+    padding: 40px 16px 60px;
+  }
+
+  .jump-footer-links {
+    gap: 14px;
   }
 }
 
