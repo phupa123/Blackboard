@@ -14,11 +14,44 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
     <!-- Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
 
     <!-- Sky Blue Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>">
+
+    <style>
+        /* 404 Animated Elements */
+        .err-float-badge {
+            animation: badgeFloat 4s ease-in-out infinite alternate;
+        }
+        @keyframes badgeFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-8px) rotate(1.5deg); }
+        }
+
+        .err-glow-pulse {
+            animation: glowPulse 3s ease-in-out infinite alternate;
+        }
+        @keyframes glowPulse {
+            0% { opacity: 0.35; transform: scale(0.95); }
+            100% { opacity: 0.85; transform: scale(1.2); }
+        }
+
+        .err-big-num {
+            font-size: clamp(4.5rem, 12vw, 8rem);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.05em;
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 45%, #38bdf8 80%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(2, 132, 199, 0.15);
+        }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden">
     <!-- Cloud Ambient Animated Background -->
@@ -54,41 +87,51 @@
     </header>
 
     <!-- Main Content Container: 404 Error Center -->
-    <main class="flex-1 flex items-center justify-center px-6 py-12 relative z-10">
-        <div class="max-w-xl w-full bg-white/90 backdrop-blur-xl border border-slate-200/90 rounded-3xl p-8 sm:p-12 shadow-2xl text-center">
+    <main class="flex-1 flex items-center justify-center px-4 sm:px-6 py-12 relative z-10">
+        <div id="errorCard" class="max-w-xl w-full bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-3xl p-6 sm:p-12 shadow-[0_20px_60px_-15px_rgba(2,132,199,0.18)] text-center relative overflow-hidden">
             
-            <!-- Graphic Status Badge & 404 Illustration -->
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold font-mono bg-rose-50 text-rose-600 border border-rose-200 mb-6">
+            <!-- Animated Ambient Background Inside Card -->
+            <div class="absolute -top-24 -right-24 w-60 h-60 rounded-full bg-sky-300/20 blur-3xl pointer-events-none err-glow-pulse"></div>
+            <div class="absolute -bottom-24 -left-24 w-60 h-60 rounded-full bg-cyan-200/30 blur-3xl pointer-events-none err-glow-pulse" style="animation-delay: -1.5s;"></div>
+
+            <!-- Graphic Status Badge -->
+            <div class="anim-item inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold font-mono bg-rose-50 text-rose-600 border border-rose-200/80 mb-4 shadow-sm">
                 <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-                HTTP 404 • PAGE NOT FOUND
+                PAGE NOT FOUND • กระดานดำสัมพันธ์
             </div>
 
-            <div class="relative w-28 h-28 mx-auto mb-6 flex items-center justify-center">
-                <div class="absolute inset-0 bg-sky-400/15 rounded-full blur-xl scale-125"></div>
-                <div class="w-24 h-24 rounded-2xl bg-gradient-to-tr from-sky-500 to-cyan-400 flex items-center justify-center text-white shadow-xl shadow-sky-500/25 border border-white/40">
-                    <svg width="44" height="44" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <!-- Giant 404 Visual & Floating Blackboard Icon -->
+            <div class="anim-item relative my-2 flex items-center justify-center">
+                <div class="err-big-num select-none">404</div>
+                <div class="err-float-badge absolute w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-sky-500 to-cyan-400 flex items-center justify-center text-white shadow-xl shadow-sky-500/35 border-2 border-white/80 p-3">
+                    <svg class="w-full h-full" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="5" width="32" height="24" rx="4" fill="white" fill-opacity="0.2" stroke="white" stroke-width="2.5"/>
+                        <line x1="7" y1="24" x2="20" y2="24" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M12 29L9 35M28 29L31 35" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M12 11H18C20.2 11 21.5 12.2 21.5 14C21.5 15.5 20.5 16.5 19 16.8C20.8 17.2 22 18.3 22 20.2C22 22.2 20.4 23.5 18 23.5H12V11Z" fill="white"/>
+                        <circle cx="15.5" cy="14.5" r="1.2" fill="#0284c7"/>
+                        <circle cx="15.5" cy="19.5" r="1.2" fill="#0284c7"/>
                     </svg>
                 </div>
             </div>
 
-            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-prompt mb-3">
+            <h1 class="anim-item text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-prompt mb-2">
                 ไม่พบหน้าที่คุณต้องการ
             </h1>
-            <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 font-prompt">
-                หน้าที่คุณพยายามเข้าถึง (<span id="attemptedUrlDisplay" class="font-mono text-sky-600 font-semibold break-all"></span>) ไม่มีอยู่จริง ถูกย้าย หรือลิงก์อาจพิมพ์ไม่ถูกต้อง
+            <p class="anim-item text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 font-prompt">
+                หน้าที่คุณพยายามเข้าถึง (<span id="attemptedUrlDisplay" class="font-mono text-sky-600 font-semibold break-all bg-sky-50 px-2 py-0.5 rounded border border-sky-200"></span>) ไม่มีอยู่จริง หรืออาจสะกดผิด
             </p>
 
             <!-- Search or Direct Navigate Form -->
-            <form id="navigateForm" class="mb-6 text-left">
+            <form id="navigateForm" class="anim-item mb-6 text-left">
                 <label for="destinationInput" class="block text-xs font-bold text-slate-700 uppercase font-mono tracking-wider mb-2">
-                    พิมพ์ชื่อหน้าหรือเส้นทางที่ต้องการจะไป:
+                    พิมพ์ชื่อหน้าหรือค้นหาคำที่ต้องการ:
                 </label>
                 <div class="relative flex items-center">
                     <input 
                         type="text" 
                         id="destinationInput" 
-                        placeholder="เช่น index, library, admin หรือพิมพ์คำค้นหา..." 
+                        placeholder="เช่น หน้าแรก, library, admin หรือพิมพ์ค้นหาผลงาน..." 
                         class="w-full pl-11 pr-24 py-3.5 bg-slate-50 border border-slate-300/80 rounded-2xl text-slate-800 text-sm focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-500/10 transition-all font-prompt"
                         autocomplete="off"
                     >
@@ -99,27 +142,27 @@
                     </div>
                     <button 
                         type="submit" 
-                        class="absolute right-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+                        class="absolute right-2 px-4 py-2 bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
                     >
                         ไปที่หน้า →
                     </button>
                 </div>
                 <!-- Quick Page Suggestion Pills -->
                 <div class="flex flex-wrap items-center gap-2 mt-3 text-xs">
-                    <span class="text-slate-400 font-mono">หน้าที่แนะนำ:</span>
-                    <a href="index.html" class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-100 transition-colors">
+                    <span class="text-slate-400 font-mono">ทางลัดแนะนำ:</span>
+                    <a href="index.html" class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-100 transition-colors font-medium">
                         🏠 หน้าแรก
                     </a>
-                    <a href="library.html" class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-100 transition-colors">
+                    <a href="library.html" class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-100 transition-colors font-medium">
                         📚 คลังงาน (Library)
                     </a>
                 </div>
             </form>
 
-            <hr class="border-slate-100 my-6">
+            <hr class="anim-item border-slate-100 my-6">
 
             <!-- Action Buttons: Go Back, Go Home, Refresh -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="anim-item grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button 
                     type="button" 
                     id="btnGoBack" 
@@ -195,6 +238,55 @@
             const pathDisplay = document.getElementById('attemptedUrlDisplay');
             if (pathDisplay) {
                 pathDisplay.textContent = window.location.pathname + window.location.search || '/unknown';
+            }
+
+            // 1.1 GSAP Smooth Premium Entrance Animation
+            if (window.gsap) {
+                const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+                // Animate card scale and fade
+                tl.from('#errorCard', {
+                    y: 35,
+                    opacity: 0,
+                    scale: 0.95,
+                    duration: 0.75,
+                })
+                // Animate child items with smooth stagger
+                .from('.anim-item', {
+                    y: 20,
+                    opacity: 0,
+                    duration: 0.55,
+                    stagger: 0.08,
+                    clearProps: 'all'
+                }, '-=0.45')
+                // Pop the floating Blackboard Badge
+                .from('.err-float-badge', {
+                    scale: 0,
+                    rotation: -15,
+                    opacity: 0,
+                    duration: 0.6,
+                    ease: 'back.out(1.8)'
+                }, '-=0.5');
+
+                // Animate ambient background bubbles
+                gsap.to('.cloud-bubble-1', {
+                    x: 40,
+                    y: 30,
+                    scale: 1.08,
+                    duration: 10,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'sine.inOut'
+                });
+                gsap.to('.cloud-bubble-2', {
+                    x: -35,
+                    y: -25,
+                    scale: 1.12,
+                    duration: 12,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'sine.inOut'
+                });
             }
 
             // 2. Action: ย้อนกลับ (Go back in browser history or fallback to home)
