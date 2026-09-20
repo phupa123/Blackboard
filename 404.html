@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - ไม่พบหน้าที่ต้องการ | BlackBoard</title>
+    <title>404 - ไม่พบหน้าที่ต้องการ | BlackBoard กระดานดำสัมพันธ์ ครั้งที่ 21</title>
     <meta name="description" content="ขออภัย ไม่พบหน้าที่คุณกำลังค้นหาบน BlackBoard - กระดานดำสัมพันธ์ ครั้งที่ 21">
 
     <!-- Google Fonts: Prompt & Plus Jakarta Sans -->
@@ -11,49 +11,191 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- GSAP Animation Library -->
+    <!-- GSAP & Canvas Confetti Animation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
-    <!-- Stylesheet -->
+    <!-- Project Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
 
     <!-- Sky Blue Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>">
 
     <style>
-        /* 404 Animated Elements */
-        .err-float-badge {
-            animation: badgeFloat 4s ease-in-out infinite alternate;
-        }
-        @keyframes badgeFloat {
-            0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(-8px) rotate(1.5deg); }
+        /* Custom Bootstrap Enhancements for 404 Page */
+        body {
+            font-family: 'Prompt', 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .err-glow-pulse {
-            animation: glowPulse 3s ease-in-out infinite alternate;
-        }
-        @keyframes glowPulse {
-            0% { opacity: 0.35; transform: scale(0.95); }
-            100% { opacity: 0.85; transform: scale(1.2); }
+        .err-hero-card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            border-radius: 28px;
+            box-shadow: 0 25px 60px -15px rgba(2, 132, 199, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
         }
 
         .err-big-num {
-            font-size: clamp(4.5rem, 12vw, 8rem);
+            font-size: clamp(5.5rem, 14vw, 9rem);
             font-weight: 900;
-            line-height: 1;
-            letter-spacing: -0.05em;
-            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 45%, #38bdf8 80%, #10b981 100%);
+            line-height: 0.95;
+            letter-spacing: -0.06em;
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 40%, #38bdf8 70%, #10b981 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(2, 132, 199, 0.15);
+            filter: drop-shadow(0 15px 25px rgba(2, 132, 199, 0.2));
+            user-select: none;
+        }
+
+        .err-float-emblem {
+            animation: floatEmblem 4s ease-in-out infinite alternate;
+        }
+        @keyframes floatEmblem {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .err-pulse-glow {
+            animation: pulseGlow 3.5s ease-in-out infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { opacity: 0.25; transform: scale(0.9); }
+            100% { opacity: 0.7; transform: scale(1.18); }
+        }
+
+        /* Search & Autocomplete Dropdown List */
+        .search-results-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-radius: 18px;
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            box-shadow: 0 15px 40px -5px rgba(15, 23, 42, 0.18);
+            z-index: 100;
+            max-height: 320px;
+            overflow-y: auto;
+            display: none;
+            padding: 8px;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #1e293b;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .search-result-item:hover, .search-result-item.is-selected {
+            background-color: #f0f9ff;
+            color: #0284c7;
+            transform: translateX(4px);
+        }
+
+        .search-result-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.15rem;
+        }
+
+        /* Interactive Action Buttons */
+        .btn-modern-primary {
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+            color: #ffffff !important;
+            font-weight: 700;
+            border-radius: 9999px;
+            border: none;
+            padding: 12px 24px;
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.28);
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-modern-primary:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.38);
+        }
+
+        .btn-modern-secondary {
+            background: #ffffff;
+            color: #334155 !important;
+            font-weight: 600;
+            border-radius: 9999px;
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            padding: 12px 22px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .btn-modern-secondary:hover {
+            background: #f8fafc;
+            color: #0284c7 !important;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Quick Navigation Cards */
+        .quick-nav-card {
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 16px;
+            background: #ffffff;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .quick-nav-card:hover {
+            border-color: #38bdf8;
+            background: #f0f9ff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.12);
+            color: #0284c7;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+<body>
     <!-- Cloud Ambient Animated Background -->
     <div class="cloud-ambient-bg">
         <div class="cloud-bubble cloud-bubble-1"></div>
@@ -79,129 +221,143 @@
             </div>
         </a>
 
-        <!-- Navigation Menu -->
+        <!-- Compact Pill Navigation for Desktop & Mobile -->
         <ul class="jump-nav-menu">
-            <li class="jump-nav-item"><a href="index.html">หน้าแรก</a></li>
-            <li class="jump-nav-item"><a href="library.html">คลังงาน (Library)</a></li>
+            <li class="jump-nav-item"><a href="index.html"><i class="bi bi-house-door me-1"></i>หน้าแรก</a></li>
+            <li class="jump-nav-item"><a href="library.html"><i class="bi bi-collection me-1"></i>คลังงาน (Library)</a></li>
         </ul>
     </header>
 
-    <!-- Main Content Container: 404 Error Center -->
-    <main class="flex-1 flex items-center justify-center px-4 sm:px-6 py-12 relative z-10">
-        <div id="errorCard" class="max-w-xl w-full bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-3xl p-6 sm:p-12 shadow-[0_20px_60px_-15px_rgba(2,132,199,0.18)] text-center relative overflow-hidden">
-            
-            <!-- Animated Ambient Background Inside Card -->
-            <div class="absolute -top-24 -right-24 w-60 h-60 rounded-full bg-sky-300/20 blur-3xl pointer-events-none err-glow-pulse"></div>
-            <div class="absolute -bottom-24 -left-24 w-60 h-60 rounded-full bg-cyan-200/30 blur-3xl pointer-events-none err-glow-pulse" style="animation-delay: -1.5s;"></div>
+    <!-- Main Content Container: Bootstrap Center Layout -->
+    <main class="container py-5 my-auto position-relative" style="z-index: 10;">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+                
+                <div id="errorCard" class="err-hero-card p-4 p-sm-5 text-center">
+                    <!-- Ambient Glow Circles -->
+                    <div class="position-absolute err-pulse-glow" style="top: -80px; right: -80px; width: 220px; height: 220px; border-radius: 50%; background: rgba(56, 189, 248, 0.22); filter: blur(50px); pointer-events: none;"></div>
+                    <div class="position-absolute err-pulse-glow" style="bottom: -80px; left: -80px; width: 220px; height: 220px; border-radius: 50%; background: rgba(16, 185, 129, 0.18); filter: blur(50px); pointer-events: none; animation-delay: -1.8s;"></div>
 
-            <!-- Graphic Status Badge -->
-            <div class="anim-item inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold font-mono bg-rose-50 text-rose-600 border border-rose-200/80 mb-4 shadow-sm">
-                <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-                PAGE NOT FOUND • กระดานดำสัมพันธ์
-            </div>
-
-            <!-- Giant 404 Visual & Floating Blackboard Icon -->
-            <div class="anim-item relative my-2 flex items-center justify-center">
-                <div class="err-big-num select-none">404</div>
-                <div class="err-float-badge absolute w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-sky-500 to-cyan-400 flex items-center justify-center text-white shadow-xl shadow-sky-500/35 border-2 border-white/80 p-3">
-                    <svg class="w-full h-full" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="4" y="5" width="32" height="24" rx="4" fill="white" fill-opacity="0.2" stroke="white" stroke-width="2.5"/>
-                        <line x1="7" y1="24" x2="20" y2="24" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M12 29L9 35M28 29L31 35" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-                        <path d="M12 11H18C20.2 11 21.5 12.2 21.5 14C21.5 15.5 20.5 16.5 19 16.8C20.8 17.2 22 18.3 22 20.2C22 22.2 20.4 23.5 18 23.5H12V11Z" fill="white"/>
-                        <circle cx="15.5" cy="14.5" r="1.2" fill="#0284c7"/>
-                        <circle cx="15.5" cy="19.5" r="1.2" fill="#0284c7"/>
-                    </svg>
-                </div>
-            </div>
-
-            <h1 class="anim-item text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-prompt mb-2">
-                ไม่พบหน้าที่คุณต้องการ
-            </h1>
-            <p class="anim-item text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 font-prompt">
-                หน้าที่คุณพยายามเข้าถึง (<span id="attemptedUrlDisplay" class="font-mono text-sky-600 font-semibold break-all bg-sky-50 px-2 py-0.5 rounded border border-sky-200"></span>) ไม่มีอยู่จริง หรืออาจสะกดผิด
-            </p>
-
-            <!-- Search or Direct Navigate Form -->
-            <form id="navigateForm" class="anim-item mb-6 text-left">
-                <label for="destinationInput" class="block text-xs font-bold text-slate-700 uppercase font-mono tracking-wider mb-2">
-                    พิมพ์ชื่อหน้าหรือค้นหาคำที่ต้องการ:
-                </label>
-                <div class="relative flex items-center">
-                    <input 
-                        type="text" 
-                        id="destinationInput" 
-                        placeholder="เช่น หน้าแรก, library, admin หรือพิมพ์ค้นหาผลงาน..." 
-                        class="w-full pl-11 pr-24 py-3.5 bg-slate-50 border border-slate-300/80 rounded-2xl text-slate-800 text-sm focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-500/10 transition-all font-prompt"
-                        autocomplete="off"
-                    >
-                    <div class="absolute left-3.5 text-slate-400 pointer-events-none">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
+                    <!-- Badge Header -->
+                    <div class="anim-target mb-3">
+                        <span class="badge rounded-pill bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 fs-7 fw-semibold font-monospace">
+                            <span class="spinner-grow spinner-grow-sm text-danger me-1" role="status" style="width: 8px; height: 8px;"></span>
+                            HTTP 404 • PAGE NOT FOUND
+                        </span>
                     </div>
-                    <button 
-                        type="submit" 
-                        class="absolute right-2 px-4 py-2 bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
-                    >
-                        ไปที่หน้า →
-                    </button>
+
+                    <!-- Center 404 Visual & Floating Logo Badge -->
+                    <div class="anim-target position-relative d-flex align-items-center justify-content-center my-1">
+                        <div class="err-big-num">404</div>
+                        <div class="err-float-emblem position-absolute rounded-4 shadow-lg p-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #0284c7, #38bdf8); border: 3px solid #ffffff; box-shadow: 0 12px 30px rgba(2, 132, 199, 0.4) !important;">
+                            <svg class="w-100 h-100" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="5" width="32" height="24" rx="4" fill="white" fill-opacity="0.2" stroke="white" stroke-width="2.5"/>
+                                <line x1="7" y1="24" x2="20" y2="24" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M12 29L9 35M28 29L31 35" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+                                <path d="M12 11H18C20.2 11 21.5 12.2 21.5 14C21.5 15.5 20.5 16.5 19 16.8C20.8 17.2 22 18.3 22 20.2C22 22.2 20.4 23.5 18 23.5H12V11Z" fill="white"/>
+                                <circle cx="15.5" cy="14.5" r="1.2" fill="#0284c7"/>
+                                <circle cx="15.5" cy="19.5" r="1.2" fill="#0284c7"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Title & Context -->
+                    <h1 class="anim-target h2 fw-black text-dark tracking-tight mb-2">
+                        ไม่พบหน้าที่คุณต้องการ
+                    </h1>
+                    <p class="anim-target text-muted small mb-4 px-sm-3">
+                        หน้าที่คุณพยายามเข้าถึง (<code id="attemptedUrlDisplay" class="text-primary bg-primary-subtle px-2 py-1 rounded border border-primary-subtle font-monospace text-break"></code>) ไม่มีอยู่จริง หรืออาจสะกดชื่อหน้าไม่ถูกต้อง
+                    </p>
+
+                    <!-- Interactive Smart Search Box with Instant Suggestions Dropdown -->
+                    <div class="anim-target position-relative text-start mb-4">
+                        <label for="destinationInput" class="form-label small fw-bold text-uppercase text-secondary font-monospace mb-1">
+                            <i class="bi bi-compass me-1 text-primary"></i> ค้นหาหรือเลือกหน้าที่ต้องการจะไป:
+                        </label>
+                        <div class="input-group input-group-lg shadow-sm rounded-4 overflow-hidden border">
+                            <span class="input-group-text bg-white border-0 text-muted ps-3">
+                                <i class="bi bi-search text-primary fs-5"></i>
+                            </span>
+                            <input 
+                                type="text" 
+                                id="destinationInput" 
+                                class="form-control border-0 ps-2 fs-6" 
+                                placeholder="พิมพ์ชื่อหน้า (เช่น หน้าแรก, library, admin) หรือพิมพ์ค้นหาผลงาน..."
+                                autocomplete="off"
+                            >
+                            <button 
+                                class="btn btn-primary px-4 fw-bold fs-6" 
+                                type="button" 
+                                id="btnSubmitSearch"
+                                style="background: linear-gradient(135deg, #0284c7, #0ea5e9); border: none;"
+                            >
+                                ไปทันที <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+
+                        <!-- Instant Auto-Suggest Dropdown List (ขึ้นให้ผู้ใช้เลือกคลิกได้ทันที) -->
+                        <div id="searchResultsDropdown" class="search-results-dropdown">
+                            <!-- Populated dynamically by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Quick Page Selection Cards (กดเลือกหน้าได้ง่ายๆ ใน 1 คลิก) -->
+                    <div class="anim-target text-start mb-4">
+                        <div class="small fw-bold text-muted font-monospace mb-2">
+                            <i class="bi bi-grid-fill me-1 text-primary"></i> หรือเลือกหน้าที่ต้องการเข้าชม:
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-12 col-sm-6">
+                                <a href="index.html" class="quick-nav-card">
+                                    <div class="search-result-icon bg-primary-subtle text-primary">
+                                        <i class="bi bi-house-door-fill"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold small">หน้าแรก (Home)</div>
+                                        <div class="text-muted" style="font-size: 0.75rem;">ข้อมูลกิจกรรม & โครงการกระดานดำ</div>
+                                    </div>
+                                    <i class="bi bi-chevron-right ms-auto text-muted small"></i>
+                                </a>
+                            </div>
+
+                            <div class="col-12 col-sm-6">
+                                <a href="library.html" class="quick-nav-card">
+                                    <div class="search-result-icon bg-success-subtle text-success">
+                                        <i class="bi bi-collection-fill"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold small">คลังงาน (Library)</div>
+                                        <div class="text-muted" style="font-size: 0.75rem;">รวบรวมไอเดีย & แหล่งข้อมูลผลงาน</div>
+                                    </div>
+                                    <i class="bi bi-chevron-right ms-auto text-muted small"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="anim-target my-4 text-secondary-subtle">
+
+                    <!-- Action Buttons: Go Back, Go Home, Refresh -->
+                    <div class="anim-target d-flex flex-column flex-sm-row justify-content-center gap-2">
+                        <button type="button" id="btnGoBack" class="btn-modern-secondary flex-grow-1">
+                            <i class="bi bi-arrow-left"></i> ย้อนกลับ
+                        </button>
+                        <a href="index.html" id="btnGoHome" class="btn-modern-primary flex-grow-1">
+                            <i class="bi bi-house-door"></i> กลับไปหน้าแรก
+                        </a>
+                        <button type="button" id="btnRefresh" class="btn-modern-secondary flex-grow-1">
+                            <i class="bi bi-arrow-clockwise"></i> รีเฟรช
+                        </button>
+                    </div>
+
                 </div>
-                <!-- Quick Page Suggestion Pills -->
-                <div class="flex flex-wrap items-center gap-2 mt-3 text-xs">
-                    <span class="text-slate-400 font-mono">ทางลัดแนะนำ:</span>
-                    <a href="index.html" class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-100 transition-colors font-medium">
-                        🏠 หน้าแรก
-                    </a>
-                    <a href="library.html" class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-100 transition-colors font-medium">
-                        📚 คลังงาน (Library)
-                    </a>
-                </div>
-            </form>
 
-            <hr class="anim-item border-slate-100 my-6">
-
-            <!-- Action Buttons: Go Back, Go Home, Refresh -->
-            <div class="anim-item grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <button 
-                    type="button" 
-                    id="btnGoBack" 
-                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300 text-sm font-bold shadow-sm transition-all active:scale-95"
-                >
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
-                    ย้อนกลับ
-                </button>
-
-                <a 
-                    href="index.html" 
-                    id="btnGoHome" 
-                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white text-sm font-bold shadow-md shadow-sky-500/20 transition-all active:scale-95"
-                >
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                    </svg>
-                    กลับไปหน้าแรก
-                </a>
-
-                <button 
-                    type="button" 
-                    id="btnRefresh" 
-                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300 text-sm font-bold shadow-sm transition-all active:scale-95"
-                >
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    รีเฟรชหน้านี้
-                </button>
             </div>
-
         </div>
     </main>
 
     <!-- Footer Section -->
-    <footer class="jump-footer">
+    <footer class="jump-footer mt-auto">
         <div class="jump-footer-content">
             <div class="jump-logo-area">
                 <div class="jump-logo-badge" title="BlackBoard">
@@ -214,7 +370,7 @@
                         <circle cx="15.5" cy="19.5" r="1.2" fill="#0284c7"/>
                     </svg>
                 </div>
-                <div class="jump-logo-text" style="text-align: left;">
+                <div class="jump-logo-text text-start">
                     <span class="main-title">BlackBoard</span>
                     <span class="sub-title">กระดานดำสัมพันธ์ ครั้งที่ 21</span>
                 </div>
@@ -225,50 +381,50 @@
                 <a href="library.html">คลังงาน (Library)</a>
             </div>
 
-            <p class="jump-footer-copy">
+            <p class="jump-footer-copy mb-0">
                 BlackBoard &nbsp;|&nbsp; กระดานดำสัมพันธ์ ครั้งที่ 21 ©2026 All Rights Reserved.
             </p>
         </div>
     </footer>
 
-    <!-- Interactive Script for 404 Page Actions -->
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Interactive Script for 404 Intelligent Router & GSAP Animations -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Display the path user tried to visit
+            // 1. Display the path user attempted to visit
             const pathDisplay = document.getElementById('attemptedUrlDisplay');
             if (pathDisplay) {
                 pathDisplay.textContent = window.location.pathname + window.location.search || '/unknown';
             }
 
-            // 1.1 GSAP Smooth Premium Entrance Animation
+            // 2. GSAP Smooth Stagger Entrance Animation
             if (window.gsap) {
                 const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-                // Animate card scale and fade
                 tl.from('#errorCard', {
                     y: 35,
                     opacity: 0,
                     scale: 0.95,
-                    duration: 0.75,
+                    duration: 0.8
                 })
-                // Animate child items with smooth stagger
-                .from('.anim-item', {
+                .from('.anim-target', {
                     y: 20,
                     opacity: 0,
-                    duration: 0.55,
+                    duration: 0.5,
                     stagger: 0.08,
                     clearProps: 'all'
-                }, '-=0.45')
-                // Pop the floating Blackboard Badge
-                .from('.err-float-badge', {
+                }, '-=0.5')
+                .from('.err-float-emblem', {
                     scale: 0,
-                    rotation: -15,
+                    rotation: -25,
                     opacity: 0,
-                    duration: 0.6,
-                    ease: 'back.out(1.8)'
+                    duration: 0.65,
+                    ease: 'back.out(2)'
                 }, '-=0.5');
 
-                // Animate ambient background bubbles
+                // Floating ambient background clouds
                 gsap.to('.cloud-bubble-1', {
                     x: 40,
                     y: 30,
@@ -289,7 +445,7 @@
                 });
             }
 
-            // 2. Action: ย้อนกลับ (Go back in browser history or fallback to home)
+            // 3. Navigation Actions
             const btnGoBack = document.getElementById('btnGoBack');
             if (btnGoBack) {
                 btnGoBack.addEventListener('click', () => {
@@ -301,7 +457,6 @@
                 });
             }
 
-            // 3. Action: รีเฟรชหน้านี้ (Refresh page)
             const btnRefresh = document.getElementById('btnRefresh');
             if (btnRefresh) {
                 btnRefresh.addEventListener('click', () => {
@@ -309,33 +464,155 @@
                 });
             }
 
-            // 4. Action: กรอกหน้าที่ต้องการจะไป (Smart Destination Input & Router)
-            const navForm = document.getElementById('navigateForm');
-            const destInput = document.getElementById('destinationInput');
+            // 4. Intelligent Auto-suggest Search List (ให้ผู้ใช้เลือกได้ทันที)
+            const destinationInput = document.getElementById('destinationInput');
+            const searchResultsDropdown = document.getElementById('searchResultsDropdown');
+            const btnSubmitSearch = document.getElementById('btnSubmitSearch');
 
-            if (navForm && destInput) {
-                navForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    let query = destInput.value.trim().toLowerCase();
-                    if (!query) return;
+            // Defined routes and categories
+            const knownPages = [
+                {
+                    title: 'หน้าแรก (Home)',
+                    desc: 'หน้าหลัก ภาพรวมกิจกรรมกระดานดำสัมพันธ์ ครั้งที่ 21',
+                    url: 'index.html',
+                    icon: 'bi-house-door-fill',
+                    badge: 'bg-primary-subtle text-primary',
+                    keywords: ['หน้าแรก', 'home', 'index', 'main', 'กิจกรรม', 'blackboard', 'กระดานดำ']
+                },
+                {
+                    title: 'คลังงาน (Library)',
+                    desc: 'คลังรวบรวมทรัพยากร สไลด์นำเสนอ ลิงก์ผลงาน และไอเดีย',
+                    url: 'library.html',
+                    icon: 'bi-collection-fill',
+                    badge: 'bg-success-subtle text-success',
+                    keywords: ['คลังงาน', 'library', 'lib', 'งาน', 'ผลงาน', 'ทรัพยากร', 'resource', 'slide', 'project']
+                },
+                {
+                    title: 'ระบบจัดการหลังบ้าน (Admin Portal)',
+                    desc: 'ระบบจัดการและคัดสรรข้อมูลสำหรับทีมงาน',
+                    url: 'admin.html',
+                    icon: 'bi-shield-lock-fill',
+                    badge: 'bg-danger-subtle text-danger',
+                    keywords: ['admin', 'หลังบ้าน', 'จัดการ', 'เข้าสู่ระบบ', 'login']
+                }
+            ];
 
-                    // Clean query (remove leading slash)
-                    query = query.replace(/^\/+/, '');
+            function renderSuggestions(query) {
+                if (!searchResultsDropdown) return;
+                query = query.trim().toLowerCase();
 
-                    // Map aliases to known pages
-                    if (query === 'index' || query === 'home' || query === 'หน้าแรก' || query === 'index.html') {
-                        window.location.href = 'index.html';
-                    } else if (query === 'library' || query === 'lib' || query === 'คลังงาน' || query === 'library.html') {
-                        window.location.href = 'library.html';
-                    } else if (query === 'admin' || query === 'หลังบ้าน' || query === 'admin.html') {
-                        window.location.href = 'admin.html';
-                    } else if (query.endsWith('.html')) {
-                        window.location.href = query;
-                    } else {
-                        // If it's a search term, redirect to library with search parameter
-                        window.location.href = 'library.html?search=' + encodeURIComponent(query);
+                let matches = [];
+
+                if (query === '') {
+                    matches = knownPages;
+                } else {
+                    matches = knownPages.filter(p => {
+                        return p.title.toLowerCase().includes(query) ||
+                               p.desc.toLowerCase().includes(query) ||
+                               p.keywords.some(k => k.toLowerCase().includes(query));
+                    });
+                }
+
+                if (matches.length > 0) {
+                    let html = '';
+                    matches.forEach(item => {
+                        html += `
+                            <a href="${item.url}" class="search-result-item">
+                                <div class="search-result-icon ${item.badge}">
+                                    <i class="bi ${item.icon}"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold small text-dark">${item.title}</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">${item.desc}</div>
+                                </div>
+                                <span class="badge bg-light text-secondary border">เข้าสู่หน้า <i class="bi bi-arrow-right"></i></span>
+                            </a>
+                        `;
+                    });
+
+                    // Add external search in library option if user typed something custom
+                    if (query !== '') {
+                        html += `
+                            <a href="library.html?search=${encodeURIComponent(query)}" class="search-result-item border-top mt-1 pt-2">
+                                <div class="search-result-icon bg-info-subtle text-info">
+                                    <i class="bi bi-search"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold small text-dark">ค้นหาผลงาน "${query}" ในคลัง Library</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">ค้นหาเนื้อหา ไอเดีย หรือลิงก์ที่ตรงกับคำนี้</div>
+                                </div>
+                                <span class="badge bg-info-subtle text-info border border-info-subtle">ค้นหาทันที</span>
+                            </a>
+                        `;
+                    }
+
+                    searchResultsDropdown.innerHTML = html;
+                    searchResultsDropdown.style.display = 'block';
+                } else if (query !== '') {
+                    searchResultsDropdown.innerHTML = `
+                        <a href="library.html?search=${encodeURIComponent(query)}" class="search-result-item">
+                            <div class="search-result-icon bg-info-subtle text-info">
+                                <i class="bi bi-search"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold small text-dark">ค้นหา "${query}" ในคลังงาน Library</div>
+                                <div class="text-muted" style="font-size: 0.75rem;">ไปยังคลังผลงานพร้อมค้นหาคำนี้ทันที</div>
+                            </div>
+                            <span class="badge bg-primary">ค้นหา <i class="bi bi-arrow-right"></i></span>
+                        </a>
+                    `;
+                    searchResultsDropdown.style.display = 'block';
+                } else {
+                    searchResultsDropdown.style.display = 'none';
+                }
+            }
+
+            if (destinationInput) {
+                // Focus: show suggestions
+                destinationInput.addEventListener('focus', () => {
+                    renderSuggestions(destinationInput.value);
+                });
+
+                // Input: update matches instantly
+                destinationInput.addEventListener('input', () => {
+                    renderSuggestions(destinationInput.value);
+                });
+
+                // Enter key: navigate to first match or search
+                destinationInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        executeNavigation();
                     }
                 });
+            }
+
+            // Click outside to close dropdown
+            document.addEventListener('click', (e) => {
+                if (searchResultsDropdown && destinationInput && !searchResultsDropdown.contains(e.target) && e.target !== destinationInput) {
+                    searchResultsDropdown.style.display = 'none';
+                }
+            });
+
+            function executeNavigation() {
+                const val = destinationInput.value.trim().toLowerCase().replace(/^\/+/, '');
+                if (!val) return;
+
+                if (val === 'index' || val === 'home' || val === 'หน้าแรก' || val === 'index.html') {
+                    window.location.href = 'index.html';
+                } else if (val === 'library' || val === 'lib' || val === 'คลังงาน' || val === 'library.html') {
+                    window.location.href = 'library.html';
+                } else if (val === 'admin' || val === 'หลังบ้าน' || val === 'admin.html') {
+                    window.location.href = 'admin.html';
+                } else if (val.endsWith('.html')) {
+                    window.location.href = val;
+                } else {
+                    window.location.href = 'library.html?search=' + encodeURIComponent(val);
+                }
+            }
+
+            if (btnSubmitSearch) {
+                btnSubmitSearch.addEventListener('click', executeNavigation);
             }
         });
     </script>
