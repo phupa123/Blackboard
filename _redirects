@@ -1,4 +1,0 @@
-# Cloudflare Static Assets Redirects
-/index /index.html 200
-/library /library.html 200
-/admin /admin.html 200
