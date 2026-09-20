@@ -718,4 +718,13 @@
     // Init
     initSupabase();
     initAnimations();
+
+    // Handle URL search parameter (e.g. redirected from 404 search)
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search');
+    if (searchParam && searchInput) {
+        searchInput.value = searchParam;
+        searchQuery = searchParam;
+        renderItems();
+    }
 })();

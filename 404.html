@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - ไม่พบหน้าที่ต้องการ | BlackBoard</title>
+    <meta name="description" content="ขออภัย ไม่พบหน้าที่คุณกำลังค้นหาบน BlackBoard - กระดานดำสัมพันธ์ ครั้งที่ 21">
+
+    <!-- Google Fonts: Prompt & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Sky Blue Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>">
+</head>
+<body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+    <!-- Cloud Ambient Animated Background -->
+    <div class="cloud-ambient-bg">
+        <div class="cloud-bubble cloud-bubble-1"></div>
+        <div class="cloud-bubble cloud-bubble-2"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="jump-header">
+        <a href="index.html" class="jump-logo-area">
+            <div class="jump-logo-badge" title="BlackBoard">
+                <svg class="jump-logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="5" width="32" height="24" rx="4" fill="white" fill-opacity="0.2" stroke="white" stroke-width="2.5"/>
+                    <line x1="7" y1="24" x2="20" y2="24" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M12 29L9 35M28 29L31 35" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+                    <path d="M12 11H18C20.2 11 21.5 12.2 21.5 14C21.5 15.5 20.5 16.5 19 16.8C20.8 17.2 22 18.3 22 20.2C22 22.2 20.4 23.5 18 23.5H12V11Z" fill="white"/>
+                    <circle cx="15.5" cy="14.5" r="1.2" fill="#0284c7"/>
+                    <circle cx="15.5" cy="19.5" r="1.2" fill="#0284c7"/>
+                </svg>
+            </div>
+            <div class="jump-logo-text">
+                <span class="main-title">BlackBoard</span>
+                <span class="sub-title">กระดานดำสัมพันธ์ ครั้งที่ 21</span>
+            </div>
+        </a>
+
+        <!-- Navigation Menu -->
+        <ul class="jump-nav-menu">
+            <li class="jump-nav-item"><a href="index.html">หน้าแรก</a></li>
+            <li class="jump-nav-item"><a href="library.html">คลังงาน (Library)</a></li>
+        </ul>
+    </header>
+
+    <!-- Main Content Container: 404 Error Center -->
+    <main class="flex-1 flex items-center justify-center px-6 py-12 relative z-10">
+        <div class="max-w-xl w-full bg-white/90 backdrop-blur-xl border border-slate-200/90 rounded-3xl p-8 sm:p-12 shadow-2xl text-center">
+            
+            <!-- Graphic Status Badge & 404 Illustration -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold font-mono bg-rose-50 text-rose-600 border border-rose-200 mb-6">
+                <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+                HTTP 404 • PAGE NOT FOUND
+            </div>
+
+            <div class="relative w-28 h-28 mx-auto mb-6 flex items-center justify-center">
+                <div class="absolute inset-0 bg-sky-400/15 rounded-full blur-xl scale-125"></div>
+                <div class="w-24 h-24 rounded-2xl bg-gradient-to-tr from-sky-500 to-cyan-400 flex items-center justify-center text-white shadow-xl shadow-sky-500/25 border border-white/40">
+                    <svg width="44" height="44" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-prompt mb-3">
+                ไม่พบหน้าที่คุณต้องการ
+            </h1>
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 font-prompt">
+                หน้าที่คุณพยายามเข้าถึง (<span id="attemptedUrlDisplay" class="font-mono text-sky-600 font-semibold break-all"></span>) ไม่มีอยู่จริง ถูกย้าย หรือลิงก์อาจพิมพ์ไม่ถูกต้อง
+            </p>
+
+            <!-- Search or Direct Navigate Form -->
+            <form id="navigateForm" class="mb-6 text-left">
+                <label for="destinationInput" class="block text-xs font-bold text-slate-700 uppercase font-mono tracking-wider mb-2">
+                    พิมพ์ชื่อหน้าหรือเส้นทางที่ต้องการจะไป:
+                </label>
+                <div class="relative flex items-center">
+                    <input 
+                        type="text" 
+                        id="destinationInput" 
+                        placeholder="เช่น index, library, admin หรือพิมพ์คำค้นหา..." 
+                        class="w-full pl-11 pr-24 py-3.5 bg-slate-50 border border-slate-300/80 rounded-2xl text-slate-800 text-sm focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-500/10 transition-all font-prompt"
+                        autocomplete="off"
+                    >
+                    <div class="absolute left-3.5 text-slate-400 pointer-events-none">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="absolute right-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+                    >
+                        ไปที่หน้า →
+                    </button>
+                </div>
+                <!-- Quick Page Suggestion Pills -->
+                <div class="flex flex-wrap items-center gap-2 mt-3 text-xs">
+                    <span class="text-slate-400 font-mono">หน้าที่แนะนำ:</span>
+                    <a href="index.html" class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-100 transition-colors">
+                        🏠 หน้าแรก
+                    </a>
+                    <a href="library.html" class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-100 transition-colors">
+                        📚 คลังงาน (Library)
+                    </a>
+                </div>
+            </form>
+
+            <hr class="border-slate-100 my-6">
+
+            <!-- Action Buttons: Go Back, Go Home, Refresh -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button 
+                    type="button" 
+                    id="btnGoBack" 
+                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300 text-sm font-bold shadow-sm transition-all active:scale-95"
+                >
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    ย้อนกลับ
+                </button>
+
+                <a 
+                    href="index.html" 
+                    id="btnGoHome" 
+                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white text-sm font-bold shadow-md shadow-sky-500/20 transition-all active:scale-95"
+                >
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    กลับไปหน้าแรก
+                </a>
+
+                <button 
+                    type="button" 
+                    id="btnRefresh" 
+                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300 text-sm font-bold shadow-sm transition-all active:scale-95"
+                >
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    รีเฟรชหน้านี้
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="jump-footer">
+        <div class="jump-footer-content">
+            <div class="jump-logo-area">
+                <div class="jump-logo-badge" title="BlackBoard">
+                    <svg class="jump-logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="5" width="32" height="24" rx="4" fill="white" fill-opacity="0.2" stroke="white" stroke-width="2.5"/>
+                        <line x1="7" y1="24" x2="20" y2="24" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M12 29L9 35M28 29L31 35" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M12 11H18C20.2 11 21.5 12.2 21.5 14C21.5 15.5 20.5 16.5 19 16.8C20.8 17.2 22 18.3 22 20.2C22 22.2 20.4 23.5 18 23.5H12V11Z" fill="white"/>
+                        <circle cx="15.5" cy="14.5" r="1.2" fill="#0284c7"/>
+                        <circle cx="15.5" cy="19.5" r="1.2" fill="#0284c7"/>
+                    </svg>
+                </div>
+                <div class="jump-logo-text" style="text-align: left;">
+                    <span class="main-title">BlackBoard</span>
+                    <span class="sub-title">กระดานดำสัมพันธ์ ครั้งที่ 21</span>
+                </div>
+            </div>
+
+            <div class="jump-footer-links">
+                <a href="index.html">หน้าแรก</a>
+                <a href="library.html">คลังงาน (Library)</a>
+            </div>
+
+            <p class="jump-footer-copy">
+                BlackBoard &nbsp;|&nbsp; กระดานดำสัมพันธ์ ครั้งที่ 21 ©2026 All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Interactive Script for 404 Page Actions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Display the path user tried to visit
+            const pathDisplay = document.getElementById('attemptedUrlDisplay');
+            if (pathDisplay) {
+                pathDisplay.textContent = window.location.pathname + window.location.search || '/unknown';
+            }
+
+            // 2. Action: ย้อนกลับ (Go back in browser history or fallback to home)
+            const btnGoBack = document.getElementById('btnGoBack');
+            if (btnGoBack) {
+                btnGoBack.addEventListener('click', () => {
+                    if (window.history.length > 1) {
+                        window.history.back();
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+
+            // 3. Action: รีเฟรชหน้านี้ (Refresh page)
+            const btnRefresh = document.getElementById('btnRefresh');
+            if (btnRefresh) {
+                btnRefresh.addEventListener('click', () => {
+                    window.location.reload();
+                });
+            }
+
+            // 4. Action: กรอกหน้าที่ต้องการจะไป (Smart Destination Input & Router)
+            const navForm = document.getElementById('navigateForm');
+            const destInput = document.getElementById('destinationInput');
+
+            if (navForm && destInput) {
+                navForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    let query = destInput.value.trim().toLowerCase();
+                    if (!query) return;
+
+                    // Clean query (remove leading slash)
+                    query = query.replace(/^\/+/, '');
+
+                    // Map aliases to known pages
+                    if (query === 'index' || query === 'home' || query === 'หน้าแรก' || query === 'index.html') {
+                        window.location.href = 'index.html';
+                    } else if (query === 'library' || query === 'lib' || query === 'คลังงาน' || query === 'library.html') {
+                        window.location.href = 'library.html';
+                    } else if (query === 'admin' || query === 'หลังบ้าน' || query === 'admin.html') {
+                        window.location.href = 'admin.html';
+                    } else if (query.endsWith('.html')) {
+                        window.location.href = query;
+                    } else {
+                        // If it's a search term, redirect to library with search parameter
+                        window.location.href = 'library.html?search=' + encodeURIComponent(query);
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="js/transition.js"></script>
+</body>
+</html>
