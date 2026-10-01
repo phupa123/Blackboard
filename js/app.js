@@ -149,7 +149,33 @@
 
         const newStatus = item.status === 'use' ? 'not_use' : 'use';
         item.status = newStatus;
-        renderGrid();
+
+        // อัปเดตเฉพาะการ์ดนั้นแบบ Smooth In-Place (ไม่ Re-render ทั้งหน้าและไม่เด้ง Animation ซ้ำ)
+        if (currentFilter !== 'all') {
+            renderGrid(false);
+        } else {
+            // อัปเดตตัวเลข Stats
+            if (countUse) countUse.textContent = items.filter((i) => i.status === 'use').length;
+            if (countNotUse) countNotUse.textContent = items.filter((i) => i.status === 'not_use').length;
+
+            const card = document.getElementById(`card-${id}`);
+            if (card) {
+                const isUse = newStatus === 'use';
+                card.className = `jump-card status-${newStatus}`;
+                const badge = card.querySelector('.jump-status-badge');
+                if (badge) {
+                    badge.className = `jump-status-badge ${newStatus}`;
+                    badge.innerHTML = `<span class="status-dot ${isUse ? 'online' : 'demo'}" style="width: 7px; height: 7px;"></span> ${isUse ? 'ใช้ (Active)' : 'ไม่ใช้ (Archived)'}`;
+                }
+                const btn = card.querySelector('.btn-toggle-status');
+                if (btn) {
+                    btn.className = `btn-toggle-status ${isUse ? 'mark-notuse' : 'mark-use'}`;
+                    btn.innerHTML = isUse
+                        ? `<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg> เปลี่ยนเป็น "ไม่ใช้"`
+                        : `<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> เปลี่ยนเป็น "ใช้"`;
+                }
+            }
+        }
 
         const { error } = await supabase
             .from('items')
@@ -311,7 +337,7 @@
     inputTitle.addEventListener('input', updateModalPreview);
 
     // --- Render Grid ---
-    function renderGrid() {
+    function renderGrid(triggerAnimation = true) {
         // Counts
         const totalCount = items.length;
         const useCount = items.filter((i) => i.status === 'use').length;
@@ -423,8 +449,10 @@
             })
             .join('');
 
-        // Trigger GSAP Card Entrance Animation
-        animateCards();
+        // Trigger GSAP Card Entrance Animation (only on full load/filter changes)
+        if (triggerAnimation) {
+            animateCards();
+        }
     }
 
     function escapeHtml(str) {
