@@ -623,8 +623,8 @@ body {
 
 /* Card Banner / Thumbnail */
 .jump-card-banner {
-  height: 160px;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  height: 180px;
+  background: #0f172a;
   position: relative;
   border-bottom: 1px solid var(--border-color);
   display: flex;
@@ -642,15 +642,16 @@ body {
   height: 100%;
   object-fit: cover;
   object-position: top;
-  filter: brightness(0.65) blur(1px);
-  transform: scale(1.05);
-  transition: transform 0.4s ease, filter 0.4s ease;
+  filter: brightness(0.9) contrast(1.05);
+  transform: scale(1.02);
+  transition: transform 0.35s ease, filter 0.35s ease;
   z-index: 1;
+  opacity: 1;
 }
 
 .jump-card:hover .banner-preview-bg {
-  transform: scale(1.1);
-  filter: brightness(0.4) blur(1.5px);
+  transform: scale(1.08);
+  filter: brightness(0.65) contrast(1.1);
 }
 
 .banner-center-info {
@@ -660,29 +661,37 @@ body {
   gap: 8px;
   position: relative;
   z-index: 2;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.jump-card:hover .banner-center-info {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 
 .banner-domain {
-  font-size: 0.86rem;
+  font-size: 0.82rem;
   color: #ffffff;
   font-weight: 700;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-  background: rgba(15, 23, 42, 0.6);
-  padding: 2px 10px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  background: rgba(15, 23, 42, 0.75);
+  padding: 3px 12px;
   border-radius: 9999px;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .jump-card-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.25s ease;
+  z-index: 3;
 }
 
 .jump-card:hover .jump-card-overlay {

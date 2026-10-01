@@ -246,34 +246,33 @@
         if (previewAddressBar) previewAddressBar.textContent = fullUrl;
         if (externalLinkBtn) externalLinkBtn.href = fullUrl;
 
-        // โหลดรูป Snapshot ความละเอียดสูง (แสดงได้ 100% ไม่ถูกบล็อกด้วย X-Frame-Options)
+        // โหลดรูป Snapshot ไว้พร้อมเป็นแบ็กอัพ
         const snapshotUrl = `https://image.thum.io/get/width/1200/crop/1000/noanimate/${encodeURIComponent(fullUrl)}`;
         if (previewSnapshotImg) {
             previewSnapshotImg.src = snapshotUrl;
         }
 
-        // เริ่มต้นด้วยโหมด Snapshot ที่ปลอดภัยและมองเห็นแน่นอน
-        if (previewSnapshotWrapper) previewSnapshotWrapper.style.display = 'flex';
+        // เริ่มต้นด้วยโหมด "เว็บสด (Interactive)" โดยตรงตามที่ผู้ใช้ต้องการ
+        let isLiveMode = true;
+        if (previewSnapshotWrapper) previewSnapshotWrapper.style.display = 'none';
         if (previewIframe) {
-            previewIframe.style.display = 'none';
-            previewIframe.src = '';
+            previewIframe.style.display = 'block';
+            previewIframe.src = fullUrl;
         }
 
-        let isLiveMode = false;
         if (previewModeToggle) {
-            previewModeToggle.textContent = '🌐 ลองเปิดเว็บสด (Interactive)';
+            previewModeToggle.textContent = '🖼️ สลับดู Snapshot (รูปถ่าย)';
             previewModeToggle.onclick = () => {
                 isLiveMode = !isLiveMode;
                 if (isLiveMode) {
                     previewSnapshotWrapper.style.display = 'none';
                     previewIframe.style.display = 'block';
                     previewIframe.src = fullUrl;
-                    previewModeToggle.textContent = '🖼️ สลับกลับมาดูรูป Snapshot';
+                    previewModeToggle.textContent = '🖼️ สลับดู Snapshot (รูปถ่าย)';
                 } else {
                     previewSnapshotWrapper.style.display = 'flex';
                     previewIframe.style.display = 'none';
-                    previewIframe.src = '';
-                    previewModeToggle.textContent = '🌐 ลองเปิดเว็บสด (Interactive)';
+                    previewModeToggle.textContent = '🌐 สลับกลับไปเว็บสด (Interactive)';
                 }
             };
         }
