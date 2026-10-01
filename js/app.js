@@ -41,10 +41,13 @@
     const previewModal = document.getElementById('previewModal');
     const closePreviewModalBtn = document.getElementById('closePreviewModalBtn');
     const previewModalTitle = document.getElementById('previewModalTitle');
+    const previewModalFavicon = document.getElementById('previewModalFavicon');
     const previewIframe = document.getElementById('previewIframe');
+    const previewSnapshotImg = document.getElementById('previewSnapshotImg');
+    const previewSnapshotWrapper = document.getElementById('previewSnapshotWrapper');
+    const previewAddressBar = document.getElementById('previewAddressBar');
+    const previewModeToggle = document.getElementById('previewModeToggle');
     const externalLinkBtn = document.getElementById('externalLinkBtn');
-    const iframeFallback = document.getElementById('iframeFallback');
-    const fallbackLink = document.getElementById('fallbackLink');
 
     // --- Helpers: Domain & Favicon ---
     function getDomain(url) {
@@ -238,16 +241,42 @@
             fullUrl = 'https://' + fullUrl;
         }
 
-        previewModalTitle.textContent = title;
-        externalLinkBtn.href = fullUrl;
-        fallbackLink.href = fullUrl;
+        if (previewModalTitle) previewModalTitle.textContent = title;
+        if (previewModalFavicon) previewModalFavicon.src = getFaviconUrl(fullUrl);
+        if (previewAddressBar) previewAddressBar.textContent = fullUrl;
+        if (externalLinkBtn) externalLinkBtn.href = fullUrl;
 
-        previewIframe.src = fullUrl;
-        iframeFallback.style.display = 'none';
+        // โหลดรูป Snapshot ความละเอียดสูง (แสดงได้ 100% ไม่ถูกบล็อกด้วย X-Frame-Options)
+        const snapshotUrl = `https://image.thum.io/get/width/1200/crop/1000/noanimate/${encodeURIComponent(fullUrl)}`;
+        if (previewSnapshotImg) {
+            previewSnapshotImg.src = snapshotUrl;
+        }
 
-        previewIframe.onerror = () => {
-            iframeFallback.style.display = 'flex';
-        };
+        // เริ่มต้นด้วยโหมด Snapshot ที่ปลอดภัยและมองเห็นแน่นอน
+        if (previewSnapshotWrapper) previewSnapshotWrapper.style.display = 'flex';
+        if (previewIframe) {
+            previewIframe.style.display = 'none';
+            previewIframe.src = '';
+        }
+
+        let isLiveMode = false;
+        if (previewModeToggle) {
+            previewModeToggle.textContent = '🌐 ลองเปิดเว็บสด (Interactive)';
+            previewModeToggle.onclick = () => {
+                isLiveMode = !isLiveMode;
+                if (isLiveMode) {
+                    previewSnapshotWrapper.style.display = 'none';
+                    previewIframe.style.display = 'block';
+                    previewIframe.src = fullUrl;
+                    previewModeToggle.textContent = '🖼️ สลับกลับมาดูรูป Snapshot';
+                } else {
+                    previewSnapshotWrapper.style.display = 'flex';
+                    previewIframe.style.display = 'none';
+                    previewIframe.src = '';
+                    previewModeToggle.textContent = '🌐 ลองเปิดเว็บสด (Interactive)';
+                }
+            };
+        }
 
         openModal(previewModal);
     };
