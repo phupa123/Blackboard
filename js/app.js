@@ -43,10 +43,8 @@
     const previewModalTitle = document.getElementById('previewModalTitle');
     const previewModalFavicon = document.getElementById('previewModalFavicon');
     const previewIframe = document.getElementById('previewIframe');
-    const previewSnapshotImg = document.getElementById('previewSnapshotImg');
-    const previewSnapshotWrapper = document.getElementById('previewSnapshotWrapper');
-    const previewAddressBar = document.getElementById('previewAddressBar');
-    const previewModeToggle = document.getElementById('previewModeToggle');
+    const iframeBlockedFallback = document.getElementById('iframeBlockedFallback');
+    const directOpenBtn = document.getElementById('directOpenBtn');
     const externalLinkBtn = document.getElementById('externalLinkBtn');
 
     // --- Helpers: Domain & Favicon ---
@@ -234,7 +232,7 @@
         }
     };
 
-    // --- Open Full Preview ---
+    // --- Open Full Preview (Live Web Only) ---
     window.openPreviewModal = function (url, title) {
         let fullUrl = url.trim();
         if (!fullUrl.startsWith('http://') && !fullUrl.startsWith('https://')) {
@@ -243,38 +241,14 @@
 
         if (previewModalTitle) previewModalTitle.textContent = title;
         if (previewModalFavicon) previewModalFavicon.src = getFaviconUrl(fullUrl);
-        if (previewAddressBar) previewAddressBar.textContent = fullUrl;
         if (externalLinkBtn) externalLinkBtn.href = fullUrl;
+        if (directOpenBtn) directOpenBtn.href = fullUrl;
 
-        // โหลดรูป Snapshot ไว้พร้อมเป็นแบ็กอัพ
-        const snapshotUrl = `https://image.thum.io/get/width/1200/crop/1000/noanimate/${encodeURIComponent(fullUrl)}`;
-        if (previewSnapshotImg) {
-            previewSnapshotImg.src = snapshotUrl;
-        }
-
-        // เริ่มต้นด้วยโหมด "เว็บสด (Interactive)" โดยตรงตามที่ผู้ใช้ต้องการ
-        let isLiveMode = true;
-        if (previewSnapshotWrapper) previewSnapshotWrapper.style.display = 'none';
+        // Reset fallback และโหลดเว็บสดเข้า iframe ทันที
+        if (iframeBlockedFallback) iframeBlockedFallback.style.display = 'none';
         if (previewIframe) {
             previewIframe.style.display = 'block';
             previewIframe.src = fullUrl;
-        }
-
-        if (previewModeToggle) {
-            previewModeToggle.textContent = '🖼️ สลับดู Snapshot (รูปถ่าย)';
-            previewModeToggle.onclick = () => {
-                isLiveMode = !isLiveMode;
-                if (isLiveMode) {
-                    previewSnapshotWrapper.style.display = 'none';
-                    previewIframe.style.display = 'block';
-                    previewIframe.src = fullUrl;
-                    previewModeToggle.textContent = '🖼️ สลับดู Snapshot (รูปถ่าย)';
-                } else {
-                    previewSnapshotWrapper.style.display = 'flex';
-                    previewIframe.style.display = 'none';
-                    previewModeToggle.textContent = '🌐 สลับกลับไปเว็บสด (Interactive)';
-                }
-            };
         }
 
         openModal(previewModal);
