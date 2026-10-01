@@ -274,6 +274,43 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'กำลังบันทึก...';
 
+        function normalizeUrl(u) {
+            try {
+                let clean = u.trim().toLowerCase();
+                if (!clean.startsWith('http://') && !clean.startsWith('https://')) {
+                    clean = 'https://' + clean;
+                }
+                const parsed = new URL(clean);
+                return (parsed.hostname + parsed.pathname).replace(/\/+$/, '');
+            } catch (e) {
+                return u.trim().toLowerCase().replace(/\/+$/, '');
+            }
+        }
+
+        // Check if URL is duplicate
+        const urlDuplicateWarning = document.getElementById('urlDuplicateWarning');
+        const duplicateWarningText = document.getElementById('duplicateWarningText');
+
+        if (!editId) {
+            const normNew = normalizeUrl(rawUrl);
+            const duplicate = items.find((i) => normalizeUrl(i.url) === normNew);
+            if (duplicate) {
+                if (urlDuplicateWarning && duplicateWarningText) {
+                    duplicateWarningText.textContent = `มีข้อมูลของเว็บนี้แล้ว: "${duplicate.title}"`;
+                    urlDuplicateWarning.style.display = 'flex';
+                }
+                alert(`⚠️ แจ้งเตือน: เว็บไซต์นี้ถูกเพิ่มในระบบไปแล้วในชื่อ "${duplicate.title}"`);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    บันทึกเข้า Library
+                `;
+                return;
+            }
+        }
+
         if (editId) {
             // Update Existing Item
             const { error } = await supabase
@@ -322,21 +359,51 @@
         closeModal(itemModal);
         itemForm.reset();
         itemIdInput.value = '';
+        if (urlDuplicateWarning) urlDuplicateWarning.style.display = 'none';
         livePreviewContainer.style.display = 'none';
         await fetchSupabaseData();
     });
 
-    // --- Live input preview ---
+    // Helper: Normalize URL string
+    function normalizeUrl(u) {
+        try {
+            let clean = u.trim().toLowerCase();
+            if (!clean.startsWith('http://') && !clean.startsWith('https://')) {
+                clean = 'https://' + clean;
+            }
+            const parsed = new URL(clean);
+            return (parsed.hostname + parsed.pathname).replace(/\/+$/, '');
+        } catch (e) {
+            return u.trim().toLowerCase().replace(/\/+$/, '');
+        }
+    }
+
+    // --- Live input preview & Duplicate URL Checker ---
     function updateModalPreview() {
         const url = inputUrl.value.trim();
+        const urlDuplicateWarning = document.getElementById('urlDuplicateWarning');
+        const duplicateWarningText = document.getElementById('duplicateWarningText');
+
         if (url.length > 3) {
             const domain = getDomain(url);
             previewDomain.textContent = domain;
             previewFavicon.src = getFaviconUrl(url);
             previewTitleText.textContent = inputTitle.value.trim() || domain;
             livePreviewContainer.style.display = 'flex';
+
+            // Check duplicate while typing (if not editing self)
+            const currentEditId = itemIdInput.value;
+            const norm = normalizeUrl(url);
+            const dup = items.find((i) => i.id !== currentEditId && normalizeUrl(i.url) === norm);
+            if (dup && urlDuplicateWarning && duplicateWarningText) {
+                duplicateWarningText.textContent = `มีข้อมูลของเว็บนี้แล้ว: "${dup.title}" (${dup.status === 'use' ? 'กำลังใช้' : 'ไม่ใช้'})`;
+                urlDuplicateWarning.style.display = 'flex';
+            } else if (urlDuplicateWarning) {
+                urlDuplicateWarning.style.display = 'none';
+            }
         } else {
             livePreviewContainer.style.display = 'none';
+            if (urlDuplicateWarning) urlDuplicateWarning.style.display = 'none';
         }
     }
 
@@ -487,13 +554,100 @@
         });
     });
 
-    // --- Search ---
+    // --- Search & Real-time Suggestions ---
+    const searchSuggestions = document.getElementById('searchSuggestions');
+
+    function updateSearchSuggestions(query) {
+        if (!searchSuggestions) return;
+        if (!query || query.length < 1) {
+            searchSuggestions.style.display = 'none';
+            searchSuggestions.innerHTML = '';
+            return;
+        }
+
+        const q = query.toLowerCase();
+        // หาผลลัพธ์ใกล้เคียงสูงสุด 5 รายการ
+        const matches = items
+            .filter((item) => {
+                return (
+                    item.title.toLowerCase().includes(q) ||
+                    (item.description && item.description.toLowerCase().includes(q)) ||
+                    item.url.toLowerCase().includes(q) ||
+                    (item.category && item.category.toLowerCase().includes(q))
+                );
+            })
+            .slice(0, 5);
+
+        if (matches.length === 0) {
+            searchSuggestions.style.display = 'none';
+            return;
+        }
+
+        searchSuggestions.innerHTML = matches
+            .map((item) => {
+                const favicon = getFaviconUrl(item.url);
+                const domain = getDomain(item.url);
+                return `
+                <div class="suggestion-item" data-id="${item.id}" data-title="${escapeHtml(item.title)}">
+                    <img src="${favicon}" alt="" style="width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;" onerror="this.src='https://via.placeholder.com/24'">
+                    <div class="sugg-info">
+                        <span class="sugg-title">${escapeHtml(item.title)}</span>
+                        <div class="sugg-meta">
+                            <span>${escapeHtml(domain)}</span>
+                            <span>•</span>
+                            <span style="color: ${item.status === 'use' ? '#10b981' : '#f43f5e'}; font-weight: 600;">${item.status === 'use' ? 'กำลังใช้' : 'ไม่ใช้'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            })
+            .join('');
+
+        searchSuggestions.style.display = 'block';
+
+        // Bind click on suggestion item
+        searchSuggestions.querySelectorAll('.suggestion-item').forEach((el) => {
+            el.addEventListener('click', () => {
+                const title = el.getAttribute('data-title');
+                const id = el.getAttribute('data-id');
+                if (searchInput) searchInput.value = title;
+                searchQuery = title;
+                searchSuggestions.style.display = 'none';
+                renderGrid(false);
+
+                // Scroll smoothly to target card
+                const targetCard = document.getElementById(`card-${id}`);
+                if (targetCard) {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetCard.style.outline = '3px solid #0284c7';
+                    setTimeout(() => {
+                        targetCard.style.outline = 'none';
+                    }, 2000);
+                }
+            });
+        });
+    }
+
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value.trim();
-            renderGrid();
+            renderGrid(false);
+            updateSearchSuggestions(searchQuery);
+        });
+
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.trim()) {
+                updateSearchSuggestions(searchInput.value.trim());
+            }
         });
     }
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+        if (searchSuggestions && !e.target.closest('.jump-search-wrapper')) {
+            searchSuggestions.style.display = 'none';
+        }
+    });
 
     // Modal Helpers with GSAP Animations
     function openModal(modal) {
