@@ -108,19 +108,22 @@
         `;
     }
 
+    let isTogglingStatus = false;
+
     // --- Realtime Sync ---
     function subscribeToRealtime() {
         if (!supabase) return;
         supabase
             .channel('public:items')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'items' }, () => {
-                fetchSupabaseData();
+                if (isTogglingStatus) return; // ข้ามการ re-render ตอนที่เพิ่งกด toggle เพื่อไม่ให้กระตุก
+                fetchSupabaseData(false);
             })
             .subscribe();
     }
 
     // --- Fetch Items ---
-    async function fetchSupabaseData() {
+    async function fetchSupabaseData(animate = true) {
         if (!supabase) return;
         try {
             const { data, error } = await supabase
@@ -135,7 +138,7 @@
             }
 
             items = data || [];
-            renderGrid();
+            renderGrid(animate);
         } catch (err) {
             console.error('Error fetching items:', err);
             showErrorState(err.message);
@@ -147,14 +150,14 @@
         const item = items.find((i) => i.id === id);
         if (!item || !supabase) return;
 
+        isTogglingStatus = true;
         const newStatus = item.status === 'use' ? 'not_use' : 'use';
         item.status = newStatus;
 
-        // อัปเดตเฉพาะการ์ดนั้นแบบ Smooth In-Place (ไม่ Re-render ทั้งหน้าและไม่เด้ง Animation ซ้ำ)
+        // อัปเดตเฉพาะการ์ดนั้นแบบ Smooth In-Place
         if (currentFilter !== 'all') {
             renderGrid(false);
         } else {
-            // อัปเดตตัวเลข Stats
             if (countUse) countUse.textContent = items.filter((i) => i.status === 'use').length;
             if (countNotUse) countNotUse.textContent = items.filter((i) => i.status === 'not_use').length;
 
@@ -182,9 +185,13 @@
             .update({ status: newStatus })
             .eq('id', id);
 
+        setTimeout(() => {
+            isTogglingStatus = false;
+        }, 1200);
+
         if (error) {
             alert('เปลี่ยนสถานะไม่สำเร็จ: ' + error.message);
-            fetchSupabaseData();
+            fetchSupabaseData(false);
         }
     };
 
@@ -388,11 +395,16 @@
                 const domain = getDomain(item.url);
                 const favicon = getFaviconUrl(item.url);
                 const isUse = item.status === 'use';
+                // URL รูป Preview หน้าเว็บจาก thum.io หรือ microlink
+                const previewImg = `https://image.thum.io/get/width/600/crop/800/noanimate/${encodeURIComponent(item.url)}`;
 
                 return `
                 <div class="jump-card status-${item.status}" id="card-${item.id}">
                     <!-- Card Banner Preview -->
                     <div class="jump-card-banner" onclick="openPreviewModal('${escapeHtml(item.url)}', '${escapeHtml(item.title)}')">
+                        <!-- Background Screenshot Preview -->
+                        <img src="${previewImg}" alt="Site Preview" class="banner-preview-bg" loading="lazy" onerror="this.style.opacity='0'">
+                        
                         <div class="banner-center-info">
                             <img src="${favicon}" alt="Favicon" style="width: 46px; height: 46px; border-radius: 12px; margin-bottom: 4px; box-shadow: 0 4px 14px rgba(0,0,0,0.5);" onerror="this.src='https://via.placeholder.com/46?text=Web'">
                             <span class="banner-domain">${escapeHtml(domain)}</span>

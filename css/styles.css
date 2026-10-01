@@ -570,7 +570,7 @@ body {
 /* Card Banner / Thumbnail */
 .jump-card-banner {
   height: 160px;
-  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  background: linear-gradient(135deg, #0f172a, #1e293b);
   position: relative;
   border-bottom: 1px solid var(--border-color);
   display: flex;
@@ -580,17 +580,43 @@ body {
   overflow: hidden;
 }
 
+.banner-preview-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  filter: brightness(0.65) blur(1px);
+  transform: scale(1.05);
+  transition: transform 0.4s ease, filter 0.4s ease;
+  z-index: 1;
+}
+
+.jump-card:hover .banner-preview-bg {
+  transform: scale(1.1);
+  filter: brightness(0.4) blur(1.5px);
+}
+
 .banner-center-info {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  position: relative;
+  z-index: 2;
 }
 
 .banner-domain {
   font-size: 0.86rem;
-  color: var(--text-secondary);
-  font-weight: 600;
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  background: rgba(15, 23, 42, 0.6);
+  padding: 2px 10px;
+  border-radius: 9999px;
+  backdrop-filter: blur(4px);
 }
 
 .jump-card-overlay {
